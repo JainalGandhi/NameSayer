@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.StartupScreenController">
    <children>
-      <Label layoutX="199.0" layoutY="84.0" text="Welcome to Name Sayer" underline="true">
+      <Label layoutX="199.0" layoutY="93.0" text="Welcome to Name Sayer" underline="true">
          <font>
             <Font name="Gargi" size="50.0" />
          </font>
@@ -17,11 +17,11 @@
             <Font name="Gargi" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="275.0" layoutY="526.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#beginButtonClicked" prefHeight="60.0" prefWidth="400.0" text="Click to Begin">
+      <Button layoutX="235.0" layoutY="529.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#beginButtonClicked" prefHeight="60.0" prefWidth="480.0" text="Click to Begin">
          <font>
             <Font name="Gargi" size="13.0" />
          </font></Button>
-      <Button layoutX="275.0" layoutY="450.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#uploadFilesButtonClicked" prefHeight="60.0" prefWidth="400.0" text="Upload Files">
+      <Button layoutX="235.0" layoutY="454.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#uploadFilesButtonClicked" prefHeight="60.0" prefWidth="480.0" text="Upload Files">
          <font>
             <Font name="Gargi" size="13.0" />
          </font>

@@ -18,9 +18,6 @@ import java.util.ResourceBundle;
 
 public class StartupScreenController implements Initializable {
 
-    private int MIN_WINDOW_WIDTH = 950;
-    private int MIN_WINDOW_HEIGHT = 700;
-
 
     @FXML private AnchorPane rootPane;
 
@@ -29,11 +26,6 @@ public class StartupScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater( ()-> {
-            Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setMinWidth(MIN_WINDOW_WIDTH);
-            stage.setMinHeight(MIN_WINDOW_HEIGHT);
-        });
 
         //Creates required directory for user to insert into database
         try {
