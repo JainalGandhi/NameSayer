@@ -1,8 +1,5 @@
 package sample;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,15 +41,6 @@ public class NamesCollection {
 
     public List<String> getAllNamesFirstCap() {
         return this.allNamesFirstCap;
-    }
-
-    public List<String> addPrefixToAllNamesFirstCap(String pref) {
-        List<String> added = new ArrayList<>();
-        for(String i: this.allNamesFirstCap){
-            added.add(pref + i);
-        }
-        return added;
-
     }
 
 }
