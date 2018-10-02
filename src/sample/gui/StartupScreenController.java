@@ -1,10 +1,13 @@
 package sample.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import sample.model.DirectoryMaintainer;
 
 import java.io.File;
@@ -15,6 +18,10 @@ import java.util.ResourceBundle;
 
 public class StartupScreenController implements Initializable {
 
+    private int MIN_WINDOW_WIDTH = 950;
+    private int MIN_WINDOW_HEIGHT = 700;
+
+
     @FXML private AnchorPane rootPane;
 
     private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
@@ -22,6 +29,12 @@ public class StartupScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater( ()-> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setMinWidth(MIN_WINDOW_WIDTH);
+            stage.setMinHeight(MIN_WINDOW_HEIGHT);
+        });
+
         //Creates required directory for user to insert into database
         try {
             this.directoryMaintainer.create();
@@ -49,10 +62,18 @@ public class StartupScreenController implements Initializable {
 
     public void beginButtonClicked() {
         try {
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("MainGui.fxml"));
-            this.rootPane.getChildren().setAll(pane);
+            Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("MainGui.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), currentStage.getWidth(), currentStage.getHeight());
+            Stage stage = new Stage();
+            stage.setTitle("Name Sayer");
+            stage.setScene(scene);
+            stage.show();
+            currentStage.close();
         }catch (IOException e){
-            System.out.println("Bad File, tell user to go fix");
+            System.out.println("error");
         }
 
     }
