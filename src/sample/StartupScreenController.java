@@ -17,7 +17,7 @@ public class StartupScreenController implements Initializable {
     @FXML private AnchorPane rootPane;
 
     private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
-    private PopupAlert popupAlert = new PopupAlert();
+    private PopupAlert alert = new PopupAlert();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -25,7 +25,7 @@ public class StartupScreenController implements Initializable {
         try {
             this.directoryMaintainer.create();
         } catch (IOException | InterruptedException e) {
-            this.popupAlert.unkownError();
+            this.alert.unkownError();
         }
     }
 
@@ -37,9 +37,11 @@ public class StartupScreenController implements Initializable {
         List<File> allFiles = fileChooser.showOpenMultipleDialog(this.rootPane.getScene().getWindow());
         if(allFiles != null) {
             try {
-                this.directoryMaintainer.copyFileList(allFiles);
+                if(this.directoryMaintainer.copyFileList(allFiles)) {
+                    this.alert.badName();
+                }
             } catch (IOException e) {
-                this.popupAlert.unkownError();
+                this.alert.unkownError();
             }
         }
     }
@@ -49,14 +51,8 @@ public class StartupScreenController implements Initializable {
             AnchorPane pane = FXMLLoader.load(getClass().getResource("MainGui.fxml"));
             this.rootPane.getChildren().setAll(pane);
         }catch (IOException e){
-            try {
-                this.directoryMaintainer.deleteBadFiles();
-                AnchorPane pane = FXMLLoader.load(getClass().getResource("MainGui.fxml"));
-                this.rootPane.getChildren().setAll(pane);
-            }catch(IOException | InterruptedException f) {
-                System.out.println("Bad File, tell user to go fix");
-            }
-
+            System.out.println("Bad File, tell user to go fix");
         }
+
     }
 }

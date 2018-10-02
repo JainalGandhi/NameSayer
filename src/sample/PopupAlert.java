@@ -68,4 +68,22 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
+    public void badName() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Bad File Name");
+        alert.setHeaderText(null);
+        alert.setContentText("One or more names you tried to upload had a bad name. It must follow the structure: \"se206_xx-xx-xxxx_xx-xx-xx_name.wav\"");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
+
+    public void badNameInDatabase() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Bad File in Database");
+        alert.setHeaderText(null);
+        alert.setContentText("There is an incorrectly named file in the database. Please delete it and then relaunch the application");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
+
 }
