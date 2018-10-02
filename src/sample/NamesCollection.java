@@ -38,12 +38,21 @@ public class NamesCollection {
     /**
      * Return all names in the database
      */
-    public List<String> getallNamesLower() {
+    public List<String> getAllNamesLower() {
         return this.allNamesLower;
     }
 
-    public List<String> getallNamesFirstCap() {
+    public List<String> getAllNamesFirstCap() {
         return this.allNamesFirstCap;
+    }
+
+    public List<String> addPrefixToAllNamesFirstCap(String pref) {
+        List<String> added = new ArrayList<>();
+        for(String i: this.allNamesFirstCap){
+            added.add(pref + i);
+        }
+        return added;
+
     }
 
 }
