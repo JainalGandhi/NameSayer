@@ -1,8 +1,9 @@
-package sample;
+package sample.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import sample.customcomponent.DynamicAutocompleteTextBox;
+import sample.model.NamesCollection;
+import sample.gui.customcomponent.DynamicAutocompleteTextBox;
 
 import java.io.IOException;
 import java.net.URL;

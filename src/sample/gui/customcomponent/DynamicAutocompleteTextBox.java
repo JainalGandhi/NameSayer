@@ -1,4 +1,4 @@
-package sample.customcomponent;
+package sample.gui.customcomponent;
 
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;

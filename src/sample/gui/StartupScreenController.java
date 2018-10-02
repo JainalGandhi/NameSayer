@@ -1,10 +1,11 @@
-package sample;
+package sample.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import sample.model.DirectoryMaintainer;
 
 import java.io.File;
 import java.io.IOException;

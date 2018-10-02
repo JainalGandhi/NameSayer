@@ -1,4 +1,4 @@
-package sample;
+package sample.model;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +32,5 @@ public class DirectoryMaintainer {
             }
         }
         return badFiles;
-    }
-
-    public void deleteBadFiles() throws InterruptedException, IOException {
-        String CREATE_DIR = "mkdir ./names/database/hello";
-        System.out.println(CREATE_DIR);
-        Process process = new ProcessBuilder("/bin/bash", "-c", CREATE_DIR).start();
-        process.waitFor();
     }
 }

@@ -1,4 +1,4 @@
-package sample;
+package sample.gui;
 
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
