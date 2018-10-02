@@ -6,9 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class DirectoryCreationFactory {
+public class DirectoryMaintainer {
 
-    public DirectoryCreationFactory() { }
+    public DirectoryMaintainer() { }
 
     public void create() throws InterruptedException, IOException {
         String CREATE_DIR = "mkdir -p ./names ./names/temp ./names/user ./names/database; touch ./names/ratings.txt";
@@ -23,5 +23,9 @@ public class DirectoryCreationFactory {
                 Files.copy(Paths.get(file.toURI()), Paths.get(copyTo + file.getName()));
             }
         }
+    }
+
+    public void deleteBadFiles() throws InterruptedException, IOException {
+
     }
 }
