@@ -8,11 +8,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private int STARTUP_GUI_HEIGHT = 700;
+    private int STARTUP_GUI_WIDTH = 950;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Parent root = FXMLLoader.load(getClass().getResource("StartupScreen.fxml"));
+        primaryStage.setTitle("Name Sayer");
+        primaryStage.setScene(new Scene(root, STARTUP_GUI_WIDTH, STARTUP_GUI_HEIGHT));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
