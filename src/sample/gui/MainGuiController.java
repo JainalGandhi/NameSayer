@@ -8,12 +8,20 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.gui.customcomponent.DynamicAutocompleteTextBox;
 import sample.model.NamesCollection;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
@@ -58,7 +66,26 @@ public class MainGuiController implements Initializable {
     }
 
     public void importTextFileButtonPressed() {
-
+    	FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Add names list text document");
+        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
+        fileChooser.getExtensionFilters().setAll(fileExtensions);
+        List<File> allFiles = fileChooser.showOpenMultipleDialog(this.rootPane.getScene().getWindow());
+        if(allFiles != null) {
+        	for(File file : allFiles) {
+                try {
+					BufferedReader br = new BufferedReader(new FileReader(file));
+					String str;
+					while ((str = br.readLine()) != null) {
+						mainTextArea.appendText(str + "\n");
+					}
+				} catch (FileNotFoundException e) {
+					this.alert.unkownError();
+				} catch (IOException e) {
+					this.alert.unkownError();
+				}
+            }
+        }
     }
 
     public void startStopSessionButtonPressed() {
