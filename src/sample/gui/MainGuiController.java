@@ -32,6 +32,8 @@ public class MainGuiController implements Initializable {
 
     private int MIN_WINDOW_WIDTH = 1150;
     private int MIN_WINDOW_HEIGHT = 800;
+    
+    private Player player = new Player();
 
     @FXML private AnchorPane rootPane;
     @FXML private AnchorPane prepareSession;
@@ -114,13 +116,17 @@ public class MainGuiController implements Initializable {
         }
     }
 
-    public void startStopSessionButtonPressed() throws IOException {
-    	Player player = new Player(mainTextArea.getText());
-    	player.formPlaylist();
-    	setNowPlaying(player);
+    public void startStopSessionButtonPressed() {
+    	player.setText(mainTextArea.getText());
+    	try {
+			player.formPlaylist();
+		} catch (IOException e) {
+			alert.unkownError();
+		}
+    	setNowPlaying();
     }
     
-    public void setNowPlaying(Player player) {
+    public void setNowPlaying() {
     	nowPlayingText.setText(player.getNowPlaying());
     }
 
@@ -154,7 +160,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void previousNameButtonPressed(){
-
+    	
     }
 
     public void playButtonPressed(){
@@ -166,7 +172,8 @@ public class MainGuiController implements Initializable {
     }
 
     public void nextNameButtonPressed(){
-
+    	player.nextName();
+    	nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void practiceNameButtonPressed(){

@@ -20,7 +20,9 @@ public class Player {
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	
-	public Player(String text) {
+	public Player() {}
+	
+	public void setText(String text) {
 		this.text = text;
 	}
 	
@@ -37,6 +39,16 @@ public class Player {
 			}
 			createWavFiles();
 		}			
+	}
+	
+	public void nextName() {
+		int size = playList.size();
+		if (currentNameIndex == size - 1) {
+			currentNameIndex = 0;
+		}
+		else {
+			currentNameIndex++;
+		}
 	}
 	
 	public String getNowPlaying() {
