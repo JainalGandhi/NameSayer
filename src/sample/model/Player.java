@@ -18,6 +18,7 @@ public class Player {
 	private String currentName;
 	private int currentNameIndex;
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
+	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	
 	public Player(String text) {
 		this.text = text;
@@ -35,17 +36,23 @@ public class Player {
 				currentNameIndex = 0;
 			}
 			createWavFiles();
-			System.out.println(wavFilesPlaylist);
 		}			
+	}
+	
+	public String getNowPlaying() {
+		return playList.get(currentNameIndex).getNowPlayingText();
 	}
 	
 	public void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			// Name needs concatenation
 			// TODO only basic concatenation if possible implemented, need to equalize volume etc
+			PlayListItem item = new PlayListItem(name);
+			
 			if (name.contains(" ") || name.contains("-")) {
 				removeConcatFile();
 				String[] names = name.split(" |-");
+				item.setNamesAmount(names.length);
 				name = name.replace(" ", "_");
 				name = name.replace("-", "_");
 				for (String singleName : names) {
@@ -53,26 +60,35 @@ public class Player {
 					if (!path.equals("")) {
 						addToConcatFile(path);
 					}
+					else {
+						item.addWarning(singleName);
+					}
 				}
 				createConcatFile(name);
 				String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
 				File file = new File(path);
 				wavFilesPlaylist.add(file);
+				item.setWav(file);
 			}
 			else {
 				// add singular wav file to the files playlist
 				// if no such name exists, file is not added
 				String path = createFilePath(name);
+				item.setNamesAmount(1);
 				if (!path.equals("")) {
 					File file = new File(path);
 					wavFilesPlaylist.add(file);
+					item.setWav(file);
+				}
+				else {
+					item.addWarning(name);
 				}
 			}
+			playList.add(item);
 		}
 	}
 	
 	public void createConcatFile(String names) {
-		System.out.println(names);
 		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + names + ".wav";
 		try {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();

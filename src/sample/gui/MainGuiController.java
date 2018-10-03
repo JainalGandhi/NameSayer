@@ -117,6 +117,11 @@ public class MainGuiController implements Initializable {
     public void startStopSessionButtonPressed() throws IOException {
     	Player player = new Player(mainTextArea.getText());
     	player.formPlaylist();
+    	setNowPlaying(player);
+    }
+    
+    public void setNowPlaying(Player player) {
+    	nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void badQualityButtonPressed() {
