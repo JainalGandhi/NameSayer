@@ -35,16 +35,29 @@ public class Player {
 				currentNameIndex = 0;
 			}
 			createWavFiles();
+			System.out.println(wavFilesPlaylist);
 		}			
 	}
 	
 	public void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
+			// Name needs concatenation
+			// TODO only basic concatenation if possible implemented, need to equalize volume etc
 			if (name.contains(" ") || name.contains("-")) {
+				removeConcatFile();
 				String[] names = name.split(" |-");
+				name = name.replace(" ", "_");
+				name = name.replace("-", "_");
 				for (String singleName : names) {
 					String path = createFilePath(singleName);
+					if (!path.equals("")) {
+						addToConcatFile(path);
+					}
 				}
+				createConcatFile(name);
+				String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
+				File file = new File(path);
+				wavFilesPlaylist.add(file);
 			}
 			else {
 				// add singular wav file to the files playlist
@@ -54,6 +67,39 @@ public class Player {
 					File file = new File(path);
 					wavFilesPlaylist.add(file);
 				}
+			}
+		}
+	}
+	
+	public void createConcatFile(String names) {
+		System.out.println(names);
+		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + names + ".wav";
+		try {
+			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+		} catch (IOException e) {
+			alert.unkownError();
+		}
+	}
+	
+	public void addToConcatFile(String path) {
+		String concatPath = "\'" + System.getProperty("user.dir") + "/names/concat.txt" + "\'";
+		String command = "echo file " + path + " >> " + concatPath;
+		try {
+			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+		} catch (IOException e) {
+			alert.unkownError();
+		}
+	}
+	
+	public void removeConcatFile() {
+		String path = System.getProperty("user.dir") + "/names/concat.txt";
+		File concat = new File(path);
+		if (concat.exists()) {
+			String command = "rm " + path;
+			try {
+				Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+			} catch (IOException e) {
+				alert.unkownError();
 			}
 		}
 	}
