@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import sample.gui.PopupAlert;
 
 public class Player {
@@ -20,10 +23,28 @@ public class Player {
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	
+	private MediaPlayer mediaPlayer;
+	
 	public Player() {}
 	
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public void playCurrentName() {
+		stopAudioPlayback();
+		File file = playList.get(currentNameIndex).getWav();
+		try {
+			mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+			mediaPlayer.play();
+		}
+		catch (Exception e) {}
+	}
+	
+	public void stopAudioPlayback() {
+		if (mediaPlayer != null) {
+			mediaPlayer.stop();
+		}
 	}
 	
 	public void formPlaylist() throws IOException {

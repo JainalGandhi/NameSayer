@@ -165,7 +165,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void playButtonPressed(){
-
+    	player.playCurrentName();
     }
 
     public void playPastRecordingButtonPressed() {

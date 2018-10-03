@@ -23,6 +23,10 @@ public class PlayListItem {
 		this.wav = wav;
 	}
 	
+	public File getWav() {
+		return this.wav;
+	}
+	
 	public void setNamesAmount(int names) {
 		this.names = names;
 	}
