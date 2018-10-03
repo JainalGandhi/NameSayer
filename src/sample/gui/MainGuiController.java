@@ -61,10 +61,19 @@ public class MainGuiController implements Initializable {
 
     }
 
+    /**
+     * Add search bar contents to text area
+     */
     public void addButtonPressed() {
-
+    	String text = searchTextBox.getText();
+    	if (text != null) {
+    		mainTextArea.appendText(text + "/n");
+    	}
     }
 
+    /**
+     * Add contents of one or more text files to the text area
+     */
     public void importTextFileButtonPressed() {
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
