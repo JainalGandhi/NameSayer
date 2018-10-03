@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
 
-    private int MIN_WINDOW_WIDTH = 1050;
+    private int MIN_WINDOW_WIDTH = 1150;
     private int MIN_WINDOW_HEIGHT = 800;
 
     @FXML private AnchorPane rootPane;
