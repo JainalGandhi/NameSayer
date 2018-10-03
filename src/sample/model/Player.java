@@ -41,18 +41,25 @@ public class Player {
 	public void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			if (name.contains(" ") || name.contains("-")) {
-				// new wav file needs to be concatenated
-				// TODO create concatenated files
-				System.out.println("concatenation needed");
+				String[] names = name.split(" |-");
+				for (String singleName : names) {
+					String path = createFilePath(singleName);
+				}
 			}
 			else {
 				// add singular wav file to the files playlist
-				wavFilesPlaylist.add(createSingularFile(name));
+				// if no such name exists, file is not added
+				String path = createFilePath(name);
+				if (!path.equals("")) {
+					File file = new File(path);
+					wavFilesPlaylist.add(file);
+				}
 			}
 		}
 	}
 	
-	public File createSingularFile(String name) throws IOException {
+	public String createFilePath(String name) throws IOException {
+		// TODO currently takes first match regardless or quality
 		// name is a singular name, find file
 		String commandDatabase = "ls names/database | grep -i _" + name;
 		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
@@ -62,18 +69,22 @@ public class Player {
 		// if a file exists in the database, add the wav file to the playlist of files, otherwise search the user files
 		if ((creation = stdoutBuffered.readLine()) != null) {
 			String path = System.getProperty("user.dir") + "/names/database/" + creation;
-			File file = new File(path);
-			return file;
+			return path;
 		}
 		else {
 			String commandUser = "ls names/user | grep -i _" + name;
 			Process processUser = new ProcessBuilder("/bin/bash", "-c", commandUser).start();
 			InputStream stdoutUser = processUser.getInputStream();
 			BufferedReader stdoutBufferedUser = new BufferedReader(new InputStreamReader(stdoutUser));
-			String creationUser = stdoutBufferedUser.readLine();
-			String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
-			File file = new File(path);
-			return file;
+			String creationUser;
+			if ((creationUser = stdoutBufferedUser.readLine()) != null) {
+				String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
+				return path;
+			}
+			else {
+				// no such recording
+				return "";
+			}
 		}
 	}
 	
