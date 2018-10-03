@@ -81,6 +81,7 @@ public class MainGuiController implements Initializable {
      * Add contents of one or more text files to the text area
      */
     public void importTextFileButtonPressed() {
+        this.mainTextArea.clear();
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");

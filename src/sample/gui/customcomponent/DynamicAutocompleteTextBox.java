@@ -27,6 +27,9 @@ public class DynamicAutocompleteTextBox extends TextField {
         new AutoCompletionTextFieldBinding<>(this, provider);
 
         this.addEventFilter(KeyEvent.KEY_RELEASED, event-> {
+            if(this.getText().isEmpty()){
+                resetAutocompleteTextBox();
+            }
             if(event.getCode()== KeyCode.SPACE || event.getCode()==KeyCode.MINUS || event.getCode()==KeyCode.UNDERSCORE) {
                 Set<String> filteredAutoCompletions = new HashSet<>(updateAutocompleteListItems());
                 provider.addPossibleSuggestions(filteredAutoCompletions);
