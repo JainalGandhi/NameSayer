@@ -7,12 +7,16 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import sample.gui.customcomponent.DynamicAutocompleteTextBox?>
 
+<?import javafx.scene.control.ToggleButton?>
 <AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.MainGuiController">
-    <AnchorPane prefHeight="85.0" prefWidth="200.0" style="-fx-background-color: #add8e6; -fx-border-style: hidden hidden solid hidden;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <AnchorPane prefHeight="85.0" prefWidth="200.0" style="-fx-background-color: rgba(203,230,238,0.91); -fx-border-style: hidden hidden solid hidden;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <HBox alignment="CENTER" layoutX="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" AnchorPane.leftAnchor="50.0">
             <Label text="Name Sayer" underline="true">
                 <font>
@@ -36,73 +40,91 @@
             </Label>
             <DynamicAutocompleteTextBox fx:id="searchTextBox" layoutX="123.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="280.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="295.0" />
             <Button layoutX="452.0" layoutY="35.0" mnemonicParsing="false" onAction="#addButtonPressed" prefHeight="38.0" prefWidth="81.0" text="Add to Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="210.0">
-            <font>
-               <Font size="12.0" />
-            </font></Button>
+                <font>
+                    <Font size="12.0" />
+                </font></Button>
             <Button layoutX="662.0" layoutY="35.0" mnemonicParsing="false" onAction="#importTextFileButtonPressed" prefHeight="38.0" prefWidth="81.0" text="Import Text File" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0">
-            <font>
-               <Font size="12.0" />
-            </font></Button>
-            <TextArea fx:id="mainTextArea" editable="false" prefHeight="320.0" prefWidth="700.0" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
-             <Button fx:id="startStopSessionButton" layoutX="246.0" layoutY="414.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startStopSessionButtonPressed" prefHeight="35.0" prefWidth="230.0" text="Start Session" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
-         <Button layoutX="572.0" layoutY="35.0" mnemonicParsing="false" onAction="#clearPlaylistButton" prefHeight="38.0" prefWidth="81.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="90.0">
-            <font>
-               <Font size="12.0" />
-            </font>
-         </Button>
+                <font>
+                    <Font size="12.0" />
+                </font></Button>
+            <TextArea id="mainTextArea" fx:id="mainTextArea" disable="true" editable="false" prefHeight="320.0" prefWidth="700.0" stylesheets="@myStyle.css" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
+            <Button fx:id="startStopSessionButton" layoutX="246.0" layoutY="414.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startStopSessionButtonPressed" prefHeight="35.0" prefWidth="230.0" text="Start Session" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
+            <Button layoutX="572.0" layoutY="35.0" mnemonicParsing="false" onAction="#clearPlaylistButton" prefHeight="38.0" prefWidth="81.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="90.0">
+                <font>
+                    <Font size="12.0" />
+                </font>
+            </Button>
         </AnchorPane>
     </AnchorPane>
-    <AnchorPane fx:id="sessionPlaybackControl" layoutY="537.0" prefHeight="140.0" prefWidth="950.0" style="-fx-background-color: #add8e6; -fx-border-style: solid hidden hidden hidden;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <TextField fx:id="NowPlayingText" editable="false" layoutX="467.0" layoutY="42.0" prefHeight="26.0" prefWidth="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0" />
-        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#badQualityButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Bad Quality" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="35.0">
-         <font>
-            <Font size="12.0" />
-         </font></Button>
-        <Slider fx:id="volumeSlider" layoutX="687.0" layoutY="101.0" prefHeight="16.0" prefWidth="112.0" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="130.0" />
-        <Button layoutX="813.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Practice Name" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0">
-         <font>
-            <Font size="12.0" />
-         </font></Button>
-        <HBox alignment="CENTER" layoutX="243.0" layoutY="93.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Shuffle" textAlignment="CENTER" wrapText="true">
-            <font>
-               <Font size="12.0" />
-            </font></Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            <font>
-               <Font size="12.0" />
-            </font>
+    <AnchorPane fx:id="sessionPlaybackControl" layoutY="537.0" prefHeight="140.0" prefWidth="950.0" style="-fx-background-color: rgba(203,230,238,0.91); -fx-border-style: solid hidden hidden hidden;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <TextField id="mainTextArea" fx:id="nowPlayingText" disable="true" editable="false" layoutX="467.0" layoutY="42.0" prefHeight="26.0" prefWidth="0.0" stylesheets="@myStyle.css" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0" />
+        <GridPane layoutX="1.0" layoutY="82.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="82.0" minWidth="82.0" prefWidth="82.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="597.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="82.0" minWidth="82.0" prefWidth="82.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="35.0" minWidth="35.0" prefWidth="35.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#badQualityButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Bad Quality" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
+                <font>
+                    <Font size="12.0" />
+                </font>
             </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play" textAlignment="CENTER" wrapText="true">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            <font>
-               <Font size="12.0" />
-            </font>
+            <Slider fx:id="volumeSlider" prefHeight="16.0" prefWidth="112.0" snapToTicks="true" GridPane.columnIndex="4" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Practice Name" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="6">
+                <font>
+                    <Font size="12.0" />
+                </font>
             </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playPastRecordingButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play Past Recording" textAlignment="CENTER" wrapText="true">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            <font>
-               <Font size="12.0" />
-            </font>
-            </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
-                <padding>
-                    <Insets left="5.0" />
-                </padding>
-            <HBox.margin>
-               <Insets left="5.0" />
-            </HBox.margin>
-            <font>
-               <Font size="12.0" />
-            </font>
-            </Button>
-        </HBox>
+            <HBox alignment="CENTER" GridPane.columnIndex="3">
+                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Shuffle" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </ToggleButton>
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play" textAlignment="CENTER" wrapText="true">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playPastRecordingButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play Past Recording" textAlignment="CENTER" wrapText="true">
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
+                    <padding>
+                        <Insets left="5.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets left="5.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+            </HBox>
+        </GridPane>
     </AnchorPane>
 </AnchorPane>
