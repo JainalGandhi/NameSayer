@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.gui.customcomponent.DynamicAutocompleteTextBox;
 import sample.model.NamesCollection;
+import sample.model.Player;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -83,7 +84,6 @@ public class MainGuiController implements Initializable {
      * Add contents of one or more text files to the text area
      */
     public void importTextFileButtonPressed() {
-        this.mainTextArea.clear();
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
@@ -95,7 +95,7 @@ public class MainGuiController implements Initializable {
 					BufferedReader br = new BufferedReader(new FileReader(file));
 					String str;
 					while ((str = br.readLine()) != null) {
-						mainTextArea.appendText(str + "\n");
+						this.mainTextArea.appendText(str + "\n");
 					}
 				} catch (FileNotFoundException e) {
 					this.alert.unkownError();
@@ -106,8 +106,9 @@ public class MainGuiController implements Initializable {
         }
     }
 
-    public void startStopSessionButtonPressed() {
-
+    public void startStopSessionButtonPressed() throws IOException {
+    	Player player = new Player(mainTextArea.getText());
+    	player.formPlaylist();
     }
 
     public void badQualityButtonPressed() {
