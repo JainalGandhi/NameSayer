@@ -54,7 +54,16 @@ public class MainGuiController implements Initializable {
     }
 
     public void addButtonPressed() {
-
+        //Checking if on new line
+        if(!(this.mainTextArea==null || this.mainTextArea.getText().trim().isEmpty() || (this.mainTextArea.getText().length()-1 >=0
+                && this.mainTextArea.getText().charAt(this.mainTextArea.getText().length()-1)=='\n'))) {
+            this.mainTextArea.appendText("\n");
+        }
+        if(this.searchTextBox.getText()!=null && !this.searchTextBox.getText().trim().isEmpty()) {
+            this.searchTextBox.resetAutocompleteTextBox();
+            this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
+            this.searchTextBox.clear();
+        }
     }
 
     public void importTextFileButtonPressed() {
