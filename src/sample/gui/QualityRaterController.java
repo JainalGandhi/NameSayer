@@ -41,6 +41,7 @@ public class QualityRaterController implements Initializable {
         for(String i : this.listView.getCheckModel().getCheckedItems()){
             System.out.println("badly rating " + i);
         }
+        cancelButtonPressed();
     }
 
     public void cancelButtonPressed() {

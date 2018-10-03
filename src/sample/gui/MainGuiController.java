@@ -135,7 +135,7 @@ public class MainGuiController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root, 380, 420));
-            stage.setTitle("Practicing Name");
+            stage.setTitle("Mark Bad Quality");
             stage.setResizable(false);
             stage.showAndWait();
         }catch(IOException e){
@@ -164,7 +164,19 @@ public class MainGuiController implements Initializable {
     }
 
     public void practiceNameButtonPressed(){
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PracticeName.fxml"));
+            Parent root = fxmlLoader.load();
+            PracticeNameController controller = fxmlLoader.getController();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 680, 500));
+            stage.setTitle("Practicing Name");
+            stage.setResizable(false);
+            stage.showAndWait();
+        }catch(IOException e){
+            this.alert.unkownError();
+        }
     }
 
 
