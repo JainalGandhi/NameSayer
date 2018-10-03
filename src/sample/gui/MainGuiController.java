@@ -3,6 +3,10 @@ package sample.gui;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import sample.gui.customcomponent.DynamicAutocompleteTextBox;
@@ -18,6 +22,15 @@ public class MainGuiController implements Initializable {
     private int MIN_WINDOW_HEIGHT = 700;
 
     @FXML private AnchorPane rootPane;
+    @FXML private AnchorPane prepareSession;
+    @FXML private AnchorPane sessionPlaybackControl;
+    @FXML private DynamicAutocompleteTextBox searchTextBox;
+    @FXML private TextArea mainTextArea;
+    @FXML private Button startStopSessionButton;
+    @FXML private TextField NowPlayingText;
+    @FXML private Slider volumeSlider;
+
+
 
     private NamesCollection namesCollection = new NamesCollection();
     private PopupAlert alert = new PopupAlert();
@@ -26,8 +39,8 @@ public class MainGuiController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater( ()-> {
             Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setMinWidth(MIN_WINDOW_WIDTH);
-            stage.setMinHeight(MIN_WINDOW_HEIGHT);
+            stage.setMinWidth(this.MIN_WINDOW_WIDTH);
+            stage.setMinHeight(this.MIN_WINDOW_HEIGHT);
         });
 
         try {
@@ -36,5 +49,45 @@ public class MainGuiController implements Initializable {
             this.alert.unkownError();
         }
 
+        this.searchTextBox.setAutocompleteList(this.namesCollection.getAllNamesFirstCap());
+
     }
+
+    public void addButtonPressed() {
+
+    }
+
+    public void importTextFileButtonPressed() {
+
+    }
+
+    public void startStopSessionButtonPressed() {
+
+    }
+
+    public void badQualityButtonPressed() {
+
+    }
+
+    public void shuffleButtonPressed(){
+
+    }
+
+    public void previousNameButtonPressed(){
+
+    }
+
+    public void playButtonPressed(){
+
+    }
+
+    public void nextNameButtonPressed(){
+
+    }
+
+    public void practiceNameButtonPressed(){
+
+    }
+
+
 }
