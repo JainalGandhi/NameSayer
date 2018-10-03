@@ -35,7 +35,6 @@ public class Player {
 				currentNameIndex = 0;
 			}
 			createWavFiles();
-			System.out.println(wavFilesPlaylist);
 		}			
 	}
 	
@@ -47,29 +46,34 @@ public class Player {
 				System.out.println("concatenation needed");
 			}
 			else {
-				// name is a singular name, find file
-				String commandDatabase = "ls names/database | grep -i _" + name;
-				Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
-				InputStream stdout = processDatabase.getInputStream();
-				BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
-				String creation;
-				// if a file exists in the database, add the wav file to the playlist of files, otherwise search the user files
-				if ((creation = stdoutBuffered.readLine()) != null) {
-					String path = System.getProperty("user.dir") + "/names/database/" + creation;
-					File file = new File(path);
-					wavFilesPlaylist.add(file);
-				}
-				else {
-					String commandUser = "ls names/user | grep -i _" + name;
-					Process processUser = new ProcessBuilder("/bin/bash", "-c", commandUser).start();
-					InputStream stdoutUser = processUser.getInputStream();
-					BufferedReader stdoutBufferedUser = new BufferedReader(new InputStreamReader(stdoutUser));
-					String creationUser = stdoutBufferedUser.readLine();
-					String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
-					File file = new File(path);
-					wavFilesPlaylist.add(file);
-				}
+				// add singular wav file to the files playlist
+				wavFilesPlaylist.add(createSingularFile(name));
 			}
+		}
+	}
+	
+	public File createSingularFile(String name) throws IOException {
+		// name is a singular name, find file
+		String commandDatabase = "ls names/database | grep -i _" + name;
+		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
+		InputStream stdout = processDatabase.getInputStream();
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+		String creation;
+		// if a file exists in the database, add the wav file to the playlist of files, otherwise search the user files
+		if ((creation = stdoutBuffered.readLine()) != null) {
+			String path = System.getProperty("user.dir") + "/names/database/" + creation;
+			File file = new File(path);
+			return file;
+		}
+		else {
+			String commandUser = "ls names/user | grep -i _" + name;
+			Process processUser = new ProcessBuilder("/bin/bash", "-c", commandUser).start();
+			InputStream stdoutUser = processUser.getInputStream();
+			BufferedReader stdoutBufferedUser = new BufferedReader(new InputStreamReader(stdoutUser));
+			String creationUser = stdoutBufferedUser.readLine();
+			String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
+			File file = new File(path);
+			return file;
 		}
 	}
 	
