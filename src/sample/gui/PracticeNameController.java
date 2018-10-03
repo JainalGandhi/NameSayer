@@ -27,12 +27,10 @@ public class PracticeNameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(()-> {
-            titleLabel.getScene().getWindow().setOnCloseRequest(event -> {
-                event.consume();
-                doneButtonPressed();
-            });
-        });
+        Platform.runLater(()-> titleLabel.getScene().getWindow().setOnCloseRequest(event -> {
+            event.consume();
+            doneButtonPressed();
+        }));
 
         this.mivLevel.setStyle("-fx-accent: #b7deff");
 
