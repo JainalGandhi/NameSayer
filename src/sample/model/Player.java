@@ -27,6 +27,8 @@ public class Player {
 	}
 	
 	public void formPlaylist() throws IOException {
+		playList.clear();
+		playlistNames.clear();
 		String[] splitText = text.split("\n");
 		if (splitText.length == 0) {
 			alert.noNameSelected();
@@ -49,6 +51,17 @@ public class Player {
 		else {
 			currentNameIndex++;
 		}
+	}
+	
+	public void prevName() {
+		int size = playList.size();
+		if (currentNameIndex == 0) {
+			currentNameIndex = size-1;
+		}
+		else {
+			currentNameIndex--;
+		}
+
 	}
 	
 	public String getNowPlaying() {

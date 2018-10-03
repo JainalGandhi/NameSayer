@@ -160,7 +160,8 @@ public class MainGuiController implements Initializable {
     }
 
     public void previousNameButtonPressed(){
-    	
+    	player.prevName();
+    	nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void playButtonPressed(){
