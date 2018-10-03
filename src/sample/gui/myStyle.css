@@ -1,0 +1,7 @@
+#mainTextArea{
+	-fx-opacity: 1;
+	-fx-background-color: white;
+	-fx-border-style: solid;
+	-fx-border-radius: 5;
+	-fx-border-color: darkgray;
+}
