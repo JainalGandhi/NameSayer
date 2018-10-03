@@ -19,15 +19,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
 
-    private int MIN_WINDOW_WIDTH = 950;
-    private int MIN_WINDOW_HEIGHT = 700;
+    private int MIN_WINDOW_WIDTH = 1050;
+    private int MIN_WINDOW_HEIGHT = 800;
 
     @FXML private AnchorPane rootPane;
     @FXML private AnchorPane prepareSession;
@@ -77,6 +75,10 @@ public class MainGuiController implements Initializable {
         }
     }
 
+    public void clearPlaylistButton() {
+        this.mainTextArea.clear();
+    }
+
     /**
      * Add contents of one or more text files to the text area
      */
@@ -121,6 +123,10 @@ public class MainGuiController implements Initializable {
     }
 
     public void playButtonPressed(){
+
+    }
+
+    public void playPastRecordingButtonPressed() {
 
     }
 

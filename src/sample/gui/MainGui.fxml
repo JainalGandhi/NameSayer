@@ -26,49 +26,74 @@
     </AnchorPane>
     <AnchorPane layoutY="87.0" prefHeight="344.0" prefWidth="950.0" style="-fx-border-style: solid hidden hidden hidden;" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">
         <AnchorPane fx:id="prepareSession" layoutX="120.0" layoutY="10.0" prefHeight="429.0" prefWidth="710.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="5.0">
-            <Label layoutY="60.0" prefHeight="26.0" text="Search Name: " AnchorPane.leftAnchor="10.0">
+            <Label layoutX="5.0" layoutY="54.0" prefHeight="26.0" text="Search Name: " AnchorPane.leftAnchor="5.0">
                 <font>
-                    <Font name="Gargi" size="14.0" />
+                    <Font name="Gargi" size="17.0" />
                 </font>
                 <padding>
                     <Insets right="20.0" />
                 </padding>
             </Label>
-            <DynamicAutocompleteTextBox fx:id="searchTextBox" layoutX="122.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="350.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="220.0" />
-            <Button layoutX="472.0" layoutY="60.0" mnemonicParsing="false" onAction="#addButtonPressed" prefHeight="26.0" prefWidth="65.0" text="Add" AnchorPane.rightAnchor="145.0" />
-            <Button layoutX="609.0" layoutY="60.0" mnemonicParsing="false" onAction="#importTextFileButtonPressed" prefWidth="130.0" text="Import Text File" AnchorPane.rightAnchor="5.0" />
-            <TextArea fx:id="mainTextArea" prefHeight="320.0" prefWidth="700.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0" />
+            <DynamicAutocompleteTextBox fx:id="searchTextBox" layoutX="122.0" layoutY="49.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="280.0" AnchorPane.leftAnchor="122.0" AnchorPane.rightAnchor="305.0" />
+            <Button layoutX="508.0" layoutY="49.0" mnemonicParsing="false" onAction="#addButtonPressed" prefHeight="42.0" prefWidth="85.0" text="Add to Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="215.0" />
+            <Button layoutX="652.0" layoutY="49.0" mnemonicParsing="false" onAction="#importTextFileButtonPressed" prefHeight="42.0" prefWidth="85.0" text="Import Text File" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="5.0" />
+            <TextArea fx:id="mainTextArea" editable="false" prefHeight="320.0" prefWidth="700.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0" />
             <HBox alignment="CENTER" layoutX="147.0" layoutY="406.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="343.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                 <Button fx:id="startStopSessionButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startStopSessionButtonPressed" prefHeight="35.0" prefWidth="230.0" text="Start Session" />
             </HBox>
+         <Button layoutX="535.0" layoutY="49.0" mnemonicParsing="false" onAction="#clearPlaylistButton" prefHeight="42.0" prefWidth="85.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="95.0" />
         </AnchorPane>
     </AnchorPane>
     <AnchorPane fx:id="sessionPlaybackControl" layoutY="537.0" prefHeight="140.0" prefWidth="950.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <TextField fx:id="NowPlayingText" editable="false" layoutX="467.0" layoutY="42.0" prefHeight="26.0" prefWidth="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0" />
-        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#badQualityButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Bad Quality" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="40.0" />
-        <Slider fx:id="volumeSlider" layoutX="687.0" layoutY="101.0" prefHeight="16.0" prefWidth="112.0" showTickMarks="true" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="151.0" />
-        <Button layoutX="813.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Practice Name" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="40.0" />
+        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#badQualityButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Bad Quality" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="35.0">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+        <Slider fx:id="volumeSlider" layoutX="687.0" layoutY="101.0" prefHeight="16.0" prefWidth="112.0" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="130.0" />
+        <Button layoutX="813.0" layoutY="38.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Practice Name" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
         <HBox alignment="CENTER" layoutX="243.0" layoutY="93.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Shuffle" textAlignment="CENTER" wrapText="true" />
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Shuffle" textAlignment="CENTER" wrapText="true">
+            <font>
+               <Font size="12.0" />
+            </font></Button>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
                 <HBox.margin>
                     <Insets left="5.0" />
                 </HBox.margin>
+            <font>
+               <Font size="12.0" />
+            </font>
             </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Play" textAlignment="CENTER" wrapText="true">
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play" textAlignment="CENTER" wrapText="true">
                 <HBox.margin>
                     <Insets left="5.0" />
                 </HBox.margin>
+            <font>
+               <Font size="12.0" />
+            </font>
             </Button>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="90.0" text="Next Name" textAlignment="CENTER" wrapText="true">
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playPastRecordingButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play Past Recording" textAlignment="CENTER" wrapText="true">
                 <HBox.margin>
                     <Insets left="5.0" />
                 </HBox.margin>
+            <font>
+               <Font size="12.0" />
+            </font>
             </Button>
-            <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="90.0" text="Shuffle" textAlignment="CENTER" visible="false" wrapText="true">
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
                 <padding>
                     <Insets left="5.0" />
                 </padding>
+            <HBox.margin>
+               <Insets left="5.0" />
+            </HBox.margin>
+            <font>
+               <Font size="12.0" />
+            </font>
             </Button>
         </HBox>
     </AnchorPane>
