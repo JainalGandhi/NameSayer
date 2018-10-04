@@ -28,7 +28,6 @@ public class Player {
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
-	private List<PlayListItem> playListShuffled = new ArrayList<PlayListItem>();
 	
 	private MediaPlayer mediaPlayer;
 	
@@ -189,7 +188,8 @@ public class Player {
 	public void createConcatFile(String names) {
 		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + names + ".wav";
 		try {
-			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+			ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
+			process.start();
 		} catch (IOException e) {
 			alert.unkownError();
 		}
@@ -199,7 +199,8 @@ public class Player {
 		String concatPath = "\'" + System.getProperty("user.dir") + "/names/concat.txt" + "\'";
 		String command = "echo file " + path + " >> " + concatPath;
 		try {
-			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+			ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
+			process.start();
 		} catch (IOException e) {
 			alert.unkownError();
 		}
@@ -211,7 +212,8 @@ public class Player {
 		if (concat.exists()) {
 			String command = "rm " + path;
 			try {
-				Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+				ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
+				process.start();
 			} catch (IOException e) {
 				alert.unkownError();
 			}
