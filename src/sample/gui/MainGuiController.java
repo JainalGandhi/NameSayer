@@ -110,6 +110,7 @@ public class MainGuiController implements Initializable {
 
     public void clearPlaylistButton() {
         clearTempData();
+        this.currentScore.setText("Current Score: " + score.differentNameRequested());
         this.nowPlayingText.clear();
         this.mainTextArea.clear();
     }
