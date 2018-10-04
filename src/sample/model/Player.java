@@ -28,7 +28,6 @@ public class Player {
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
-	private List<PlayListItem> playListShuffled = new ArrayList<PlayListItem>();
 	
 	private MediaPlayer mediaPlayer;
 	
