@@ -45,6 +45,25 @@ public class Player {
 			mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
 			mediaPlayer.setVolume(volume);
 			mediaPlayer.play();
+
+			//TODO check if adding this fixes playing singular name (EG William). It does for me (I think) but I did not manage to test if in a path with spaces in the name
+			mediaPlayer.setOnError( ()-> {
+				Runnable task = new Thread( ()-> {
+					try {
+						String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -y -i " + file.toString() + " " + file.toString();
+						Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+						process.waitFor();
+
+                        Platform.runLater(() -> {
+                            mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+                            mediaPlayer.play();
+                        });
+                    }catch(IOException | InterruptedException e) {
+					    alert.unkownError();
+                    }
+				});
+				new Thread(task).start();
+			});
 		}
 		catch (Exception e) {}
 	}
@@ -80,7 +99,6 @@ public class Player {
 		playlistNames.add(text);
 		createSingleWavFile(text);
 		playListOriginal.add(playList.get(playList.size()-1));
-		System.out.println("hi");
 	}
 	
 	public void shufflePlayList() {

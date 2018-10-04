@@ -115,6 +115,7 @@ public class MainGuiController implements Initializable {
      * Add contents of one or more text files to the text area
      */
     public void importTextFileButtonPressed() {
+        this.mainTextArea.clear();
         player.stopAudioPlayback();
         clearTempData();
     	FileChooser fileChooser = new FileChooser();
