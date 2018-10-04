@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,6 +40,7 @@ public class MainGuiController implements Initializable {
     @FXML private AnchorPane rootPane;
     @FXML private AnchorPane prepareSession;
     @FXML private AnchorPane sessionPlaybackControl;
+    @FXML private GridPane mediaControl;
     @FXML private DynamicAutocompleteTextBox searchTextBox;
     @FXML private TextArea mainTextArea;
     @FXML private Button startStopSessionButton;
@@ -66,6 +68,14 @@ public class MainGuiController implements Initializable {
             this.alert.unkownError();
         }
 
+        this.nowPlayingText.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(this.nowPlayingText.getText().isEmpty()) {
+                this.mediaControl.setDisable(true);
+            }else {
+                this.mediaControl.setDisable(false);
+            }
+        });
+
         this.searchTextBox.setAutocompleteList(this.namesCollection.getAllNamesFirstCap());
 
         this.volumeSlider.setValue(75);
@@ -86,6 +96,8 @@ public class MainGuiController implements Initializable {
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
             this.searchTextBox.clear();
         }
+
+        //TODO add code to add single name to the playlist
     }
 
     public void clearPlaylistButton() {
@@ -116,16 +128,19 @@ public class MainGuiController implements Initializable {
 				}
             }
         }
+        if(!this.mainTextArea.getText().isEmpty()) {
+            startStopSessionButtonPressed();
+        }
     }
 
     public void startStopSessionButtonPressed() {
-    	player.setText(mainTextArea.getText());
-    	try {
-			player.formPlaylist();
-		} catch (IOException e) {
-			alert.unkownError();
-		}
-    	setNowPlaying();
+        player.setText(mainTextArea.getText());
+        try {
+            player.formPlaylist();
+        } catch (IOException e) {
+            alert.unkownError();
+        }
+        setNowPlaying();
     }
     
     public void setNowPlaying() {
@@ -169,12 +184,12 @@ public class MainGuiController implements Initializable {
     }
 
     public void previousNameButtonPressed(){
-    	player.prevName();
-    	nowPlayingText.setText(player.getNowPlaying());
+        player.prevName();
+        nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void playButtonPressed(){
-    	player.playCurrentName();
+        player.playCurrentName();
     }
 
     public void playPastRecordingButtonPressed() {
@@ -182,8 +197,8 @@ public class MainGuiController implements Initializable {
     }
 
     public void nextNameButtonPressed(){
-    	player.nextName();
-    	nowPlayingText.setText(player.getNowPlaying());
+        player.nextName();
+        nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void practiceNameButtonPressed(){

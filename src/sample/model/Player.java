@@ -17,6 +17,9 @@ import sample.gui.PopupAlert;
 public class Player {
 	// TODO Multithread where necessary, although performance seems good so far
 
+
+	//TODO Sometimes if the name is singular, it doesn't play (eg william), but if you concatenate it with another name it works. I think its the same ffmpeg error due to codec differences
+	//TODO would be fixed if you were to pass it through ffmpeg again
 	private String text;
 	private List<String> playlistNames = new ArrayList<String>();
 	private PopupAlert alert = new PopupAlert();
