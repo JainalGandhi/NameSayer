@@ -6,11 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -19,6 +15,7 @@ import javafx.stage.Stage;
 import sample.gui.customcomponent.DynamicAutocompleteTextBox;
 import sample.model.NamesCollection;
 import sample.model.Player;
+import sample.model.Score;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,11 +33,15 @@ public class MainGuiController implements Initializable {
     private int MIN_WINDOW_HEIGHT = 800;
     
     private Player player = new Player();
+    private Score score = Score.getInstance();
+    private NamesCollection namesCollection = new NamesCollection();
+    private PopupAlert alert = new PopupAlert();
 
     @FXML private AnchorPane rootPane;
     @FXML private AnchorPane prepareSession;
     @FXML private AnchorPane sessionPlaybackControl;
     @FXML private GridPane mediaControl;
+    @FXML private Label currentScore;
     @FXML private DynamicAutocompleteTextBox searchTextBox;
     @FXML private TextArea mainTextArea;
     @FXML private Button startStopSessionButton;
@@ -48,10 +49,6 @@ public class MainGuiController implements Initializable {
     @FXML private Slider volumeSlider;
     @FXML private ToggleButton shuffleToggle;
 
-
-
-    private NamesCollection namesCollection = new NamesCollection();
-    private PopupAlert alert = new PopupAlert();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -190,6 +187,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void previousNameButtonPressed(){
+        this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.prevName();
         nowPlayingText.setText(player.getNowPlaying());
     }
@@ -203,6 +201,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void nextNameButtonPressed(){
+        this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.nextName();
         nowPlayingText.setText(player.getNowPlaying());
     }
@@ -212,6 +211,7 @@ public class MainGuiController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PracticeName.fxml"));
             Parent root = fxmlLoader.load();
             PracticeNameController controller = fxmlLoader.getController();
+            controller.setScoreLabel(this.currentScore);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root, 680, 500));

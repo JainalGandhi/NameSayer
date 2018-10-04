@@ -20,12 +20,15 @@
         <HBox alignment="CENTER" layoutX="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="85.0" AnchorPane.leftAnchor="50.0">
             <Label text="Name Sayer" underline="true">
                 <font>
-                    <Font name="Gargi" size="30.0" />
+                    <Font name="Gargi" size="38.0" />
                 </font>
             </Label>
         </HBox>
         <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="85.0" prefWidth="200.0" AnchorPane.rightAnchor="50.0">
-            <Label text="Badge/Score" />
+            <Label fx:id="currentScore" prefHeight="0.0" prefWidth="129.0" text="Current Score: 0">
+            <font>
+               <Font name="Gargi" size="16.0" />
+            </font></Label>
         </HBox>
     </AnchorPane>
     <AnchorPane layoutY="87.0" prefHeight="344.0" prefWidth="950.0" style="-fx-border-style: solid hidden hidden hidden; -fx-background-color: white;" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">

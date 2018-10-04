@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
+import sample.model.Score;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,7 @@ public class PracticeNameController implements Initializable {
 
     private PopupAlert alert = new PopupAlert();
     private Boolean functioning = true;
+    private Label scoreLabel;
 
 
     @FXML private Label titleLabel;
@@ -23,6 +25,7 @@ public class PracticeNameController implements Initializable {
     @FXML private Button saveUserButton;
     @FXML private Button compareButton;
     @FXML private Spinner<Integer> compareSpinner;
+    private Score score = Score.getInstance();
 
 
     @Override
@@ -47,6 +50,10 @@ public class PracticeNameController implements Initializable {
 
     }
 
+    public void setScoreLabel(Label label) {
+        this.scoreLabel = label;
+    }
+
     private void testMicrophoneWorking() {
         MicrophoneTester tester = new MicrophoneTester();
         while(this.functioning) {
@@ -67,6 +74,7 @@ public class PracticeNameController implements Initializable {
     }
 
     public void recordUserButtonPressed() {
+        this.scoreLabel.setText("Current Score: " + score.nameRecorded());
         this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
         this.playUserButton.setDisable(false);
         this.saveUserButton.setDisable(false);
