@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
+import sample.model.QualityMaintainer;
 
 import java.net.URL;
 import java.util.List;
@@ -16,7 +17,9 @@ import java.util.ResourceBundle;
 
 public class QualityRaterController implements Initializable {
 
-    ObservableList<String> names;
+    private ObservableList<String> names;
+    private List<String> paths;
+    private QualityMaintainer qm = new QualityMaintainer();
 
     @FXML private CheckListView<String> listView;
     @FXML private Button submitButton;
@@ -33,13 +36,14 @@ public class QualityRaterController implements Initializable {
         });
     }
 
-    public void setNames(List<String> names) {
+    public void setNames(List<String> names, List<String> paths) {
         this.names = FXCollections.observableArrayList(names);
+        this.paths = paths;
     }
 
     public void submitButtonPressed() {
-        for(String i : this.listView.getCheckModel().getCheckedItems()){
-            System.out.println("badly rating " + i);
+        for(int i : this.listView.getCheckModel().getCheckedIndices()) {
+            qm.writeBadQuality(paths.get(i));
         }
         cancelButtonPressed();
     }

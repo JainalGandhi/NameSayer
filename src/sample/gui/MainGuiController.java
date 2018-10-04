@@ -149,17 +149,23 @@ public class MainGuiController implements Initializable {
 
     public void badQualityButtonPressed() {
         try {
-            List<String> tempList = new ArrayList<>();
-            tempList.add("Peter");
-            tempList.add("Paul");
-            tempList.add("Logan");
+            List<String> tempList1 = new ArrayList<>();
+            tempList1.add("Peter");
+            tempList1.add("Paul");
+            tempList1.add("Logan");
+            List<String> tempList2 = new ArrayList<>();
+            tempList2.add("se206_2-5-2018_15-23-50_Peter.wav");
+            tempList2.add("se206_2-5-2018_15-31-49_Paul.wav");
+            tempList2.add("se206_2-5-2018_15-47-27_Logan.wav");
+
+
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("QualityRater.fxml"));
             Parent root = fxmlLoader.load();
             QualityRaterController controller = fxmlLoader.getController();
 
-            //TODO Replace tempList with type variant (so it should include the file location and shortform name
-            controller.setNames(tempList);
+            //TODO Replace (tempList1) and (tempList2) with (List of names in current name) and (List of files for names in current name) respectively
+            controller.setNames(tempList1, tempList2);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
