@@ -51,10 +51,10 @@ public class PlayListItem {
 		for (String str: warnings) {
 			iterator++;
 			if (iterator == 1) {
-				warning = warning + warnings.get(iterator-1);
+				warning = warning + str;
 			}
 			else {
-				warning = warning + ", " + warnings.get(iterator-1);
+				warning = warning + ", " + str;
 			}
 		}
 		return warning;
