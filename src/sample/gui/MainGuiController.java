@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -43,6 +44,7 @@ public class MainGuiController implements Initializable {
     @FXML private Button startStopSessionButton;
     @FXML private TextField nowPlayingText;
     @FXML private Slider volumeSlider;
+    @FXML private ToggleButton shuffleToggle;
 
 
 
@@ -156,7 +158,14 @@ public class MainGuiController implements Initializable {
     }
 
     public void shuffleButtonPressed(){
-
+    	if (shuffleToggle.isSelected()) {
+    		player.shufflePlayList();
+    		nowPlayingText.setText(player.getNowPlaying());
+    	}
+    	else {
+    		player.orderPlayList();
+    		nowPlayingText.setText(player.getNowPlaying());
+    	}
     }
 
     public void previousNameButtonPressed(){

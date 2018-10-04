@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -14,6 +15,7 @@ import javafx.scene.media.MediaPlayer;
 import sample.gui.PopupAlert;
 
 public class Player {
+	// TODO Multithread where necessary, although performance seems good so far
 
 	private String text;
 	private List<String> playlistNames = new ArrayList<String>();
@@ -22,6 +24,8 @@ public class Player {
 	private int currentNameIndex;
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
+	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
+	private List<PlayListItem> playListShuffled = new ArrayList<PlayListItem>();
 	
 	private MediaPlayer mediaPlayer;
 	
@@ -61,7 +65,22 @@ public class Player {
 				currentNameIndex = 0;
 			}
 			createWavFiles();
-		}			
+		}
+		playListOriginal.clear();
+		for (PlayListItem item : playList) {
+			playListOriginal.add(item);
+		}
+	}
+	
+	public void shufflePlayList() {
+		Collections.shuffle(playList);
+	}
+	
+	public void orderPlayList() {
+		playList.clear();
+		for (PlayListItem item : playListOriginal) {
+			playList.add(item);
+		}
 	}
 	
 	public void nextName() {

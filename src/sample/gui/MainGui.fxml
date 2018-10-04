@@ -84,7 +84,7 @@
                 </font>
             </Button>
             <HBox alignment="CENTER" GridPane.columnIndex="3">
-                <ToggleButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Shuffle" textAlignment="CENTER" wrapText="true">
+                <ToggleButton fx:id="shuffleToggle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#shuffleButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Shuffle" textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font size="12.0" />
                     </font>
