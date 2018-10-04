@@ -65,8 +65,8 @@ public class MainGuiController implements Initializable {
             this.alert.unkownError();
         }
 
-        this.nowPlayingText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(this.nowPlayingText.getText().isEmpty()) {
+        this.mainTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(this.mainTextArea.getText().isEmpty()) {
                 this.mediaControl.setDisable(true);
             }else {
                 this.mediaControl.setDisable(false);
@@ -83,11 +83,6 @@ public class MainGuiController implements Initializable {
      * Add search bar contents to text area
      */
     public void addButtonPressed() {
-        //Checking if on new line
-        if(!(this.mainTextArea==null || this.mainTextArea.getText().trim().isEmpty() || (this.mainTextArea.getText().length()-1 >=0
-                && this.mainTextArea.getText().charAt(this.mainTextArea.getText().length()-1)=='\n'))) {
-            this.mainTextArea.appendText("\n");
-        }
         if(this.searchTextBox.getText()!=null && !this.searchTextBox.getText().trim().isEmpty()) {
             this.searchTextBox.resetAutocompleteTextBox();
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
@@ -193,7 +188,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void playButtonPressed(){
-        player.playCurrentName();
+        player.playCurrentName(this.volumeSlider.getValue()/100);
     }
 
     public void playPastRecordingButtonPressed() {
