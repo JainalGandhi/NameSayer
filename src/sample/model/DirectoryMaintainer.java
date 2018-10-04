@@ -19,6 +19,11 @@ public class DirectoryMaintainer {
         process.waitFor();
     }
 
+    public void clearTempDirectory() throws IOException {
+        String CREATE_DIR = "rm -r ./names/temp; mkdir -p ./names/temp";
+        Process process = new ProcessBuilder("/bin/bash", "-c", CREATE_DIR).start();
+    }
+
     public boolean copyFileList(List<File> allFiles) throws IOException {
         boolean badFiles = false;
         String copyTo = System.getProperty("user.dir") + "/names/database/";

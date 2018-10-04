@@ -30,6 +30,7 @@ public class StartupScreenController implements Initializable {
         //Creates required directory for user to insert into database
         try {
             this.directoryMaintainer.create();
+            this.directoryMaintainer.clearTempDirectory();
         } catch (IOException | InterruptedException e) {
             this.alert.unkownError();
         }

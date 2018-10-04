@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.gui.customcomponent.DynamicAutocompleteTextBox;
+import sample.model.DirectoryMaintainer;
 import sample.model.NamesCollection;
 import sample.model.Player;
 import sample.model.Score;
@@ -31,7 +32,8 @@ public class MainGuiController implements Initializable {
 
     private int MIN_WINDOW_WIDTH = 1150;
     private int MIN_WINDOW_HEIGHT = 800;
-    
+
+    private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
     private Player player = new Player();
     private Score score = Score.getInstance();
     private NamesCollection namesCollection = new NamesCollection();
@@ -94,6 +96,7 @@ public class MainGuiController implements Initializable {
     }
 
     public void clearPlaylistButton() {
+        clearTempData();
         this.mainTextArea.clear();
     }
 
@@ -102,6 +105,7 @@ public class MainGuiController implements Initializable {
      */
     public void importTextFileButtonPressed() {
         player.stopAudioPlayback();
+        clearTempData();
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
@@ -226,6 +230,17 @@ public class MainGuiController implements Initializable {
         }catch(IOException e){
             this.alert.unkownError();
         }
+    }
+
+    private void clearTempData() {
+        Runnable task = new Thread( ()-> {
+            try {
+                this.directoryMaintainer.clearTempDirectory();
+            } catch (IOException e) {
+                this.alert.unkownError();
+            }
+        });
+        new Thread(task).start();
     }
 
 
