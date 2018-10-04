@@ -50,8 +50,7 @@
                 <font>
                     <Font size="12.0" />
                 </font></Button>
-            <TextArea id="mainTextArea" fx:id="mainTextArea" disable="true" editable="false" prefHeight="320.0" prefWidth="700.0" stylesheets="@myStyle.css" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
-            <Button fx:id="startStopSessionButton" layoutX="246.0" layoutY="414.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startStopSessionButtonPressed" prefHeight="35.0" prefWidth="230.0" text="Start Session" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
+            <TextArea id="mainTextArea" fx:id="mainTextArea" disable="true" editable="false" prefHeight="365.0" prefWidth="738.0" stylesheets="@myStyle.css" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
             <Button layoutX="572.0" layoutY="35.0" mnemonicParsing="false" onAction="#clearPlaylistButton" prefHeight="38.0" prefWidth="81.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="90.0">
                 <font>
                     <Font size="12.0" />

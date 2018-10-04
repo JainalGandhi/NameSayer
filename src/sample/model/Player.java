@@ -75,6 +75,13 @@ public class Player {
 			playListOriginal.add(item);
 		}
 	}
+
+	public void addToPlaylist(String text) throws IOException {
+		playlistNames.add(text);
+		createSingleWavFile(text);
+		playListOriginal.add(playList.get(playList.size()-1));
+		System.out.println("hi");
+	}
 	
 	public void shufflePlayList() {
 		Collections.shuffle(playList);
@@ -116,45 +123,49 @@ public class Player {
 		for (String name : playlistNames) {
 			// Name needs concatenation
 			// TODO only basic concatenation if possible implemented, need to equalize volume etc
-			PlayListItem item = new PlayListItem(name);
-			
-			if (name.contains(" ") || name.contains("-")) {
-				removeConcatFile();
-				String[] names = name.split(" |-");
-				item.setNamesAmount(names.length);
-				name = name.replace(" ", "_");
-				name = name.replace("-", "_");
-				for (String singleName : names) {
-					String path = createFilePath(singleName);
-					if (!path.equals("")) {
-						addToConcatFile(path);
-					}
-					else {
-						item.addWarning(singleName);
-					}
+			createSingleWavFile(name);
+		}
+	}
+
+	private void createSingleWavFile(String name) throws IOException {
+		PlayListItem item = new PlayListItem(name);
+
+		if (name.contains(" ") || name.contains("-")) {
+			removeConcatFile();
+			String[] names = name.split(" |-");
+			item.setNamesAmount(names.length);
+			name = name.replace(" ", "_");
+			name = name.replace("-", "_");
+			for (String singleName : names) {
+				String path = createFilePath(singleName);
+				if (!path.equals("")) {
+					addToConcatFile(path);
 				}
-				createConcatFile(name);
-				String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
+				else {
+					item.addWarning(singleName);
+				}
+			}
+			createConcatFile(name);
+			String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
+			File file = new File(path);
+			wavFilesPlaylist.add(file);
+			item.setWav(file);
+		}
+		else {
+			// add singular wav file to the files playlist
+			// if no such name exists, file is not added
+			String path = createFilePath(name);
+			item.setNamesAmount(1);
+			if (!path.equals("")) {
 				File file = new File(path);
 				wavFilesPlaylist.add(file);
 				item.setWav(file);
 			}
 			else {
-				// add singular wav file to the files playlist
-				// if no such name exists, file is not added
-				String path = createFilePath(name);
-				item.setNamesAmount(1);
-				if (!path.equals("")) {
-					File file = new File(path);
-					wavFilesPlaylist.add(file);
-					item.setWav(file);
-				}
-				else {
-					item.addWarning(name);
-				}
+				item.addWarning(name);
 			}
-			playList.add(item);
 		}
+		playList.add(item);
 	}
 	
 	public void createConcatFile(String names) {
@@ -222,5 +233,4 @@ public class Player {
 	public String getCurrentName() {
 		return currentName;
 	}
-
 }

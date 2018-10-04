@@ -46,7 +46,6 @@ public class MainGuiController implements Initializable {
     @FXML private Label currentScore;
     @FXML private DynamicAutocompleteTextBox searchTextBox;
     @FXML private TextArea mainTextArea;
-    @FXML private Button startStopSessionButton;
     @FXML private TextField nowPlayingText;
     @FXML private Slider volumeSlider;
     @FXML private ToggleButton shuffleToggle;
@@ -89,14 +88,26 @@ public class MainGuiController implements Initializable {
         if(this.searchTextBox.getText()!=null && !this.searchTextBox.getText().trim().isEmpty()) {
             this.searchTextBox.resetAutocompleteTextBox();
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
+
+            if(this.mainTextArea.getText().split("\n").length == 1) {
+                startStopSessionButtonPressed();
+            }else {
+                try {
+                    player.addToPlaylist(this.searchTextBox.getText());
+                } catch (IOException e) {
+                    alert.unkownError();
+                }
+            }
             this.searchTextBox.clear();
         }
+
 
         //TODO add code to add single name to the playlist
     }
 
     public void clearPlaylistButton() {
         clearTempData();
+        this.nowPlayingText.clear();
         this.mainTextArea.clear();
     }
 
@@ -131,7 +142,7 @@ public class MainGuiController implements Initializable {
         }
     }
 
-    public void startStopSessionButtonPressed() {
+    private void startStopSessionButtonPressed() {
         player.setText(mainTextArea.getText());
         try {
             player.formPlaylist();
@@ -141,7 +152,7 @@ public class MainGuiController implements Initializable {
         setNowPlaying();
     }
     
-    public void setNowPlaying() {
+    private void setNowPlaying() {
     	nowPlayingText.setText(player.getNowPlaying());
     }
 
