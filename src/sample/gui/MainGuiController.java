@@ -75,7 +75,7 @@ public class MainGuiController implements Initializable {
 
         this.searchTextBox.setAutocompleteList(this.namesCollection.getAllNamesFirstCap());
 
-        this.volumeSlider.setValue(75);
+        this.volumeSlider.setValue(80);
 
     }
 
@@ -83,6 +83,7 @@ public class MainGuiController implements Initializable {
      * Add search bar contents to text area
      */
     public void addButtonPressed() {
+        player.stopAudioPlayback();
         if(this.searchTextBox.getText()!=null && !this.searchTextBox.getText().trim().isEmpty()) {
             this.searchTextBox.resetAutocompleteTextBox();
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
@@ -100,6 +101,7 @@ public class MainGuiController implements Initializable {
      * Add contents of one or more text files to the text area
      */
     public void importTextFileButtonPressed() {
+        player.stopAudioPlayback();
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
@@ -140,7 +142,10 @@ public class MainGuiController implements Initializable {
     }
 
     public void badQualityButtonPressed() {
+        player.stopAudioPlayback();
         try {
+
+            //TODO remove following chunk
             List<String> tempList1 = new ArrayList<>();
             tempList1.add("Peter");
             tempList1.add("Paul");
@@ -149,7 +154,7 @@ public class MainGuiController implements Initializable {
             tempList2.add("se206_2-5-2018_15-23-50_Peter.wav");
             tempList2.add("se206_2-5-2018_15-31-49_Paul.wav");
             tempList2.add("se206_2-5-2018_15-47-27_Logan.wav");
-
+            //TODO remove above chunk
 
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("QualityRater.fxml"));
@@ -182,26 +187,31 @@ public class MainGuiController implements Initializable {
     }
 
     public void previousNameButtonPressed(){
+        player.stopAudioPlayback();
         this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.prevName();
         nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void playButtonPressed(){
+        player.stopAudioPlayback();
         player.playCurrentName(this.volumeSlider.getValue()/100);
     }
 
     public void playPastRecordingButtonPressed() {
+        player.stopAudioPlayback();
 
     }
 
     public void nextNameButtonPressed(){
+        player.stopAudioPlayback();
         this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.nextName();
         nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void practiceNameButtonPressed(){
+        player.stopAudioPlayback();
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PracticeName.fxml"));
             Parent root = fxmlLoader.load();

@@ -38,11 +38,12 @@ public class Player {
 		this.text = text;
 	}
 	
-	public void playCurrentName() {
+	public void playCurrentName(double volume) {
 		stopAudioPlayback();
 		File file = playList.get(currentNameIndex).getWav();
 		try {
 			mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+			mediaPlayer.setVolume(volume);
 			mediaPlayer.play();
 		}
 		catch (Exception e) {}
