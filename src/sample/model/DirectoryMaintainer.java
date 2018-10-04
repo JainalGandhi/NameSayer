@@ -21,7 +21,8 @@ public class DirectoryMaintainer {
 
     public void clearTempDirectory() throws IOException {
         String CREATE_DIR = "rm -r ./names/temp; mkdir -p ./names/temp";
-        Process process = new ProcessBuilder("/bin/bash", "-c", CREATE_DIR).start();
+        ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", CREATE_DIR);
+        process.start();
     }
 
     public boolean copyFileList(List<File> allFiles) throws IOException {
