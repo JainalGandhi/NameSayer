@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
-import sample.model.QualityMaintainer;
+import sample.model.DirectoryMaintainer;
 
 import java.net.URL;
 import java.util.List;
@@ -19,7 +19,7 @@ public class QualityRaterController implements Initializable {
 
     private ObservableList<String> names;
     private List<String> paths;
-    private QualityMaintainer qm = new QualityMaintainer();
+    private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
 
     @FXML private CheckListView<String> listView;
     @FXML private Button submitButton;
@@ -43,7 +43,7 @@ public class QualityRaterController implements Initializable {
 
     public void submitButtonPressed() {
         for(int i : this.listView.getCheckModel().getCheckedIndices()) {
-            qm.writeBadQuality(paths.get(i));
+            directoryMaintainer.writeBadQuality(paths.get(i));
         }
         cancelButtonPressed();
     }
