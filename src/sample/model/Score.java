@@ -36,4 +36,8 @@ public class Score {
         return this.currentScore;
     }
 
+    public int getCurrentScore() {
+        return this.currentScore;
+    }
+
 }

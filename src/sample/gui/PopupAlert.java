@@ -1,7 +1,10 @@
 package sample.gui;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
+
+import java.util.Optional;
 
 /**
  * Multipurpose popup window with configurable content
@@ -84,6 +87,20 @@ public class PopupAlert {
         alert.setContentText("There is an incorrectly named file in the database. Please delete it and then relaunch the application");
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
+    }
+
+    public boolean equipNewLevelRequest() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("You have unlocked a new skin color");
+        alert.setHeaderText(null);
+        alert.setContentText("Do you wish to equip your new skin color?");
+
+        ButtonType buttonTypeNo = new ButtonType("No");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        alert.getButtonTypes().setAll(buttonTypeNo, buttonTypeYes);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == buttonTypeYes;
     }
 
 }

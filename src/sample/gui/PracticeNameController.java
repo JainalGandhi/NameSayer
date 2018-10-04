@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
 import sample.model.Score;
@@ -17,8 +19,12 @@ public class PracticeNameController implements Initializable {
     private PopupAlert alert = new PopupAlert();
     private Boolean functioning = true;
     private Label scoreLabel;
+    private String color;
 
 
+    @FXML private AnchorPane databaseSquare;
+    @FXML private AnchorPane yourSquare;
+    @FXML private AnchorPane compareSquare;
     @FXML private Label titleLabel;
     @FXML private ProgressBar mivLevel;
     @FXML private Button playUserButton;
@@ -36,6 +42,12 @@ public class PracticeNameController implements Initializable {
         }));
 
         this.mivLevel.setStyle("-fx-accent: #b7deff");
+
+        Platform.runLater( ()-> {
+            this.databaseSquare.setStyle("-fx-background-color: " + this.color);
+            this.yourSquare.setStyle("-fx-background-color: " + this.color);
+            this.compareSquare.setStyle("-fx-background-color: " + this.color);
+        });
 
         Runnable task = new Thread( ()-> {
             try {
@@ -79,7 +91,7 @@ public class PracticeNameController implements Initializable {
         this.playUserButton.setDisable(false);
         this.saveUserButton.setDisable(false);
         this.compareButton.setDisable(false);
-        this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
+        this.mivLevel.setStyle("-fx-accent: #b7deff");
     }
 
     public void playUserButtonPressed() {
@@ -94,5 +106,9 @@ public class PracticeNameController implements Initializable {
     }
 
     public void compareButtonPressed() {
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

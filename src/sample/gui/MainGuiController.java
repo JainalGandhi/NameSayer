@@ -20,7 +20,6 @@ import sample.model.Score;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -30,9 +29,13 @@ import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
 
-    private int MIN_WINDOW_WIDTH = 1150;
-    private int MIN_WINDOW_HEIGHT = 800;
+    private final static int MIN_WINDOW_WIDTH = 1150;
+    private final static int MIN_WINDOW_HEIGHT = 800;
+    private final static String[] colorProgression = new String[]{"rgba(216,233,238,0.91)", "rgba(238,169,171,0.75)", "rgba(255,0,22,0.68)", "rgba(197,238,188,0.91)", "rgba(142,30,255,0.4)"};
+    private final static int maxLevel = colorProgression.length-1;
 
+    private int level = 0;
+    private int nextGoal = 10;
     private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
     private Player player = new Player();
     private Score score = Score.getInstance();
@@ -40,7 +43,7 @@ public class MainGuiController implements Initializable {
     private PopupAlert alert = new PopupAlert();
 
     @FXML private AnchorPane rootPane;
-    @FXML private AnchorPane prepareSession;
+    @FXML private AnchorPane topPane;
     @FXML private AnchorPane sessionPlaybackControl;
     @FXML private GridPane mediaControl;
     @FXML private Label currentScore;
@@ -55,8 +58,8 @@ public class MainGuiController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater( ()-> {
             Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setMinWidth(this.MIN_WINDOW_WIDTH);
-            stage.setMinHeight(this.MIN_WINDOW_HEIGHT);
+            stage.setMinWidth(MIN_WINDOW_WIDTH);
+            stage.setMinHeight(MIN_WINDOW_HEIGHT);
             this.rootPane.requestFocus();
         });
 
@@ -131,8 +134,6 @@ public class MainGuiController implements Initializable {
 					while ((str = br.readLine()) != null) {
 						this.mainTextArea.appendText(str + "\n");
 					}
-				} catch (FileNotFoundException e) {
-					this.alert.unkownError();
 				} catch (IOException e) {
 					this.alert.unkownError();
 				}
@@ -233,12 +234,21 @@ public class MainGuiController implements Initializable {
             Parent root = fxmlLoader.load();
             PracticeNameController controller = fxmlLoader.getController();
             controller.setScoreLabel(this.currentScore);
+            controller.setColor(colorProgression[this.level]);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root, 680, 500));
             stage.setTitle("Practicing Name");
             stage.setResizable(false);
             stage.showAndWait();
+            if(this.level!=maxLevel && this.score.getCurrentScore()>=nextGoal){
+                this.nextGoal+=this.nextGoal;
+                if(this.alert.equipNewLevelRequest()) {
+                    this.level++;
+                    this.topPane.setStyle("-fx-background-color: " + colorProgression[this.level]);
+                    this.sessionPlaybackControl.setStyle("-fx-background-color: " + colorProgression[this.level]);
+                }
+            }
         }catch(IOException e){
             this.alert.unkownError();
         }
