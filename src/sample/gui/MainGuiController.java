@@ -131,6 +131,7 @@ public class MainGuiController implements Initializable {
 					while ((str = br.readLine()) != null) {
 						this.mainTextArea.appendText(str + "\n");
 					}
+					br.close();
 				} catch (FileNotFoundException e) {
 					this.alert.unkownError();
 				} catch (IOException e) {
