@@ -149,13 +149,12 @@ public class PracticeNameController implements Initializable {
 
     public void saveUserButtonPressed() throws IOException {
     	// Remove any old user recordings for the same name
-    	String searchUser = "ls names/user | grep -i *" + this.player.getCurrentPlaylistName() + ".wav";
+    	String searchUser = "ls names/user | grep -i [[:digit:]]_" + this.player.getCurrentPlaylistName().replaceAll(" ", "_") + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
 		InputStream stdout = process.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String creation;
 		while ((creation = stdoutBuffered.readLine()) != null) {
-			System.out.println(creation);
 			String delete = "rm names/user/" + creation;
 	    	ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
 	    	process2.start();
