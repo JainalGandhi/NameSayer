@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -163,25 +164,16 @@ public class MainGuiController implements Initializable {
     public void badQualityButtonPressed() {
         player.stopAudioPlayback();
         try {
-
-            //TODO remove following chunk
-            List<String> tempList1 = new ArrayList<>();
-            tempList1.add("Peter");
-            tempList1.add("Paul");
-            tempList1.add("Logan");
-            List<String> tempList2 = new ArrayList<>();
-            tempList2.add("se206_2-5-2018_15-23-50_Peter.wav");
-            tempList2.add("se206_2-5-2018_15-31-49_Paul.wav");
-            tempList2.add("se206_2-5-2018_15-47-27_Logan.wav");
-            //TODO remove above chunk
-
+            List<String> names = Arrays.asList(this.player.getSegmentedNames(this.player.getCurrentPlaylistName()));
+            List<String> paths = new ArrayList<>();
+            for(String i : names) {
+                paths.add(this.player.createFilePath(i));
+            }
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("QualityRater.fxml"));
             Parent root = fxmlLoader.load();
             QualityRaterController controller = fxmlLoader.getController();
-
-            //TODO Replace (tempList1) and (tempList2) with (List of names in current name) and (List of files for names in current name) respectively
-            controller.setNames(tempList1, tempList2);
+            controller.setNames(names, paths);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

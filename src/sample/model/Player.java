@@ -141,6 +141,17 @@ public class Player {
 		}
 	}
 
+	public String[] getSegmentedNames(String name) {
+		return name.split(" |-|_");
+	}
+
+	public String getFileNamePart(String name) {
+		String[] names = name.split(" |-|_");
+		name = name.replace(" ", "_");
+		name = name.replace("-", "_");
+		return name;
+	}
+
 	private void createSingleWavFile(String name) throws IOException {
 		PlayListItem item = new PlayListItem(name);
 
@@ -224,7 +235,7 @@ public class Player {
 	}
 	
 	public String createFilePath(String name) throws IOException {
-		// TODO currently takes first match regardless of quality
+		// TODO currently takes first match regardless of quality -> When implementing based on rating, make it take the same one each time (ie don't randomise from all good rated files)
 		// name is a singular name, find file
 		String commandDatabase = "ls names/database | grep -i _" + name;
 		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
