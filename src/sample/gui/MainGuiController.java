@@ -219,6 +219,7 @@ public class MainGuiController implements Initializable {
 
     public void playPastRecordingButtonPressed() {
         player.stopAudioPlayback();
+        // TODO whatever needs to be done here
 
     }
 

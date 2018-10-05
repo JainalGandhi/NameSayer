@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
 import sample.model.Player;
@@ -96,12 +95,15 @@ public class PracticeNameController implements Initializable {
         this.saveUserButton.setDisable(false);
         this.compareButton.setDisable(false);
         this.mivLevel.setStyle("-fx-accent: #b7deff");
+        // TODO Record user audio for, clean audio
     }
 
     public void playUserButtonPressed() {
+    	// TODO Play user audio
     }
 
     public void saveUserButtonPressed() {
+    	// TODO Save user audio
     }
 
     public void doneButtonPressed() {
@@ -110,6 +112,7 @@ public class PracticeNameController implements Initializable {
     }
 
     public void compareButtonPressed() {
+    	// TODO Compare both audio X times
     }
 
     public void setColor(String color) {

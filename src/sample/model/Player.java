@@ -219,7 +219,7 @@ public class Player {
 	}
 	
 	public String createFilePath(String name) throws IOException {
-		// TODO currently takes first match regardless or quality
+		// TODO currently takes first match regardless of quality
 		// name is a singular name, find file
 		String commandDatabase = "ls names/database | grep -i _" + name;
 		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
