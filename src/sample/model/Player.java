@@ -17,9 +17,6 @@ import sample.gui.PopupAlert;
 public class Player {
 	// TODO Multithread where necessary, although performance seems good so far
 
-
-	//TODO Sometimes if the name is singular, it doesn't play (eg william), but if you concatenate it with another name it works. I think its the same ffmpeg error due to codec differences
-	//TODO would be fixed if you were to pass it through ffmpeg again
 	private String text;
 	private List<String> playlistNames = new ArrayList<String>();
 	private PopupAlert alert = new PopupAlert();
@@ -44,8 +41,6 @@ public class Player {
 			mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
 			mediaPlayer.setVolume(volume);
 			mediaPlayer.play();
-
-			//TODO check if adding this fixes playing singular name (EG William). It does for me (I think) but I did not manage to test if in a path with spaces in the name
 			mediaPlayer.setOnError( ()-> {
 				Runnable task = new Thread( ()-> {
 					try {
@@ -248,10 +243,6 @@ public class Player {
 				return "";
 			}
 		}
-	}
-	
-	public String getCurrentName() {
-		return currentName;
 	}
 
 	public String getCurrentPlaylistName() { return this.playlistNames.get(this.currentNameIndex); }
