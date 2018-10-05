@@ -25,6 +25,7 @@ public class Player {
 	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
 	private String workingName;
 	private String latestRecordedName;
+	private String pastRecordingOfCurrentName;
 	
 	private MediaPlayer mediaPlayer;
 	
@@ -320,5 +321,19 @@ public class Player {
 
 			mediaPlayer.setOnEndOfMedia(() -> compareRecordings(finalCount));
 		});
+	}
+
+	public void playPastRecording() throws IOException {
+		String searchUser = "ls names/user/*[0-9]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
+		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
+		InputStream stdout = process.getInputStream();
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+		String line = stdoutBuffered.readLine();
+		if(line == null){
+			this.alert.noPastRecording();
+		}else {
+			mediaPlayer = new MediaPlayer(new Media(new File(line).toURI().toString()));
+			mediaPlayer.play();
+		}
 	}
 }

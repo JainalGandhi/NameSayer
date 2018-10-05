@@ -53,6 +53,7 @@ public class MainGuiController implements Initializable {
     @FXML private TextField nowPlayingText;
     @FXML private Slider volumeSlider;
     @FXML private ToggleButton shuffleToggle;
+    @FXML private Button playPastRecordingButton;
 
 
     @Override
@@ -211,6 +212,11 @@ public class MainGuiController implements Initializable {
 
     public void playPastRecordingButtonPressed() {
         player.stopAudioPlayback();
+        try {
+            player.playPastRecording();
+        } catch (IOException e) {
+            this.alert.unkownError();
+        }
         // TODO whatever needs to be done here
 
     }

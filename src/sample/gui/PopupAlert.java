@@ -91,7 +91,7 @@ public class PopupAlert {
 
     public boolean equipNewLevelRequest() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("You have unlocked a new skin color");
+        alert.setTitle("You Have Unlocked a New Skin Color");
         alert.setHeaderText(null);
         alert.setContentText("Do you wish to equip your new skin color?");
 
@@ -103,4 +103,12 @@ public class PopupAlert {
         return result.isPresent() && result.get() == buttonTypeYes;
     }
 
+    public void noPastRecording() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("No Past Recording");
+        alert.setHeaderText(null);
+        alert.setContentText("There is no past user recording for that name. Please record one first.");
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
+    }
 }
