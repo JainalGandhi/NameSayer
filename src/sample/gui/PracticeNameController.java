@@ -106,11 +106,10 @@ public class PracticeNameController implements Initializable {
     public void recordUserButtonPressed() {
         this.scoreLabel.setText("Current Score: " + score.nameRecorded());
         this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
-        this.mivLevel.setStyle("-fx-accent: #b7deff");
         
         this.player.stopAudioPlayback();
         this.recordButton.setText("Recording...");
-        this.recordButton.setDisable(true);
+        configureRecordingState(true);
         
         this.latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getCurrentPlaylistName().replaceAll(" ", "_");
         Runnable task = new Thread( ()-> {
@@ -118,10 +117,13 @@ public class PracticeNameController implements Initializable {
                 recordAttempt();
                 Platform.runLater( ()-> {
                 	// Enable play, save and compare after recording is made
-                	this.recordButton.setDisable(false);
-                	this.playUserButton.setDisable(false);
+                    configureRecordingState(false);
+                    this.playUserButton.setDisable(false);
                     this.saveUserButton.setDisable(false);
                     this.compareButton.setDisable(false);
+                    this.recordButton.setText("Record");
+                    this.mivLevel.setStyle("-fx-accent: #b7deff");
+
                 });
             } catch (InterruptedException | IOException e) {
                 alert.unkownError();
@@ -213,5 +215,11 @@ public class PracticeNameController implements Initializable {
     public void setPlayer(Player player, double volume) {
         this.player = player;
         this.volume = volume;
+    }
+
+    public void configureRecordingState(boolean state) {
+        this.databaseSquare.setDisable(state);
+        this.compareSquare.setDisable(state);
+        this.yourSquare.setDisable(state);
     }
 }
