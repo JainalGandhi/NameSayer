@@ -15,12 +15,10 @@ import javafx.scene.media.MediaPlayer;
 import sample.gui.PopupAlert;
 
 public class Player {
-	// TODO Multithread where necessary, although performance seems good so far
 
 	private String text;
 	private List<String> playlistNames = new ArrayList<String>();
 	private PopupAlert alert = new PopupAlert();
-	private String currentName;
 	private int currentNameIndex;
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
@@ -78,7 +76,6 @@ public class Player {
 		else {
 			for (String str : splitText) {
 				playlistNames.add(str);
-				currentName = playlistNames.get(0);
 				currentNameIndex = 0;
 			}
 			createWavFiles();
