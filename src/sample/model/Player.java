@@ -24,6 +24,7 @@ public class Player {
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
 	private String workingName;
+	private String latestRecordedName;
 	
 	private MediaPlayer mediaPlayer;
 	
@@ -253,4 +254,60 @@ public class Player {
 	}
 
 	public String getCurrentPlaylistName() { return this.playList.get(this.currentNameIndex).getName(); }
+
+	public void playLatestUserRecording() {
+		String path = System.getProperty("user.dir") + "/names/temp/" + getLatestRecordedName() + ".wav";
+		this.mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+		this.mediaPlayer.play();
+	}
+
+	public void recordAttempt(String latestRecordedName) throws InterruptedException, IOException {
+		this.latestRecordedName = latestRecordedName;
+		String RECORD_NAME_ATTEMPT_COMMAND = "rm names/temp/temp.wav;"
+				+ " ffmpeg -f alsa -i default -t 5 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav 2> /dev/null; " +
+				"ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
+		Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+		process.waitFor();
+	}
+
+	public void saveAttempt() throws IOException {
+		String searchUser = "ls names/user | grep -i [[:digit:]]_" + getCurrentPlaylistName().replaceAll(" ", "_") + ".wav";
+		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
+		InputStream stdout = process.getInputStream();
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+		String creation;
+		while ((creation = stdoutBuffered.readLine()) != null) {
+			String delete = "rm names/user/" + creation;
+			ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
+			process2.start();
+		}
+
+		// Save current recording in names/user
+		String saveCommand = "cp ./names/temp/" + this.latestRecordedName + ".wav ./names/user";
+		ProcessBuilder process3 = new ProcessBuilder("/bin/bash", "-c", saveCommand);
+		process3.start();
+	}
+
+	public String getLatestRecordedName() {
+		return this.latestRecordedName;
+	}
+
+	public void compareRecordings(int count) {
+		if (count == 0) {
+			return;
+		}
+
+		count--;
+		this.mediaPlayer = new MediaPlayer(new Media(getCurrentWav().toURI().toString()));
+		this.mediaPlayer.play();
+
+		int finalCount = count;
+		this.mediaPlayer.setOnEndOfMedia(() -> {
+			String path = System.getProperty("user.dir") + "/names/temp/" + this.latestRecordedName + ".wav";
+			mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+			mediaPlayer.play();
+
+			mediaPlayer.setOnEndOfMedia(() -> compareRecordings(finalCount));
+		});
+	}
 }
