@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
+import sample.model.Player;
 import sample.model.Score;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class PracticeNameController implements Initializable {
     private Boolean functioning = true;
     private Label scoreLabel;
     private String color;
-    private String name;
+    private Player player;
 
 
     @FXML private AnchorPane databaseSquare;
@@ -33,6 +34,7 @@ public class PracticeNameController implements Initializable {
     @FXML private Button compareButton;
     @FXML private Spinner<Integer> compareSpinner;
     private Score score = Score.getInstance();
+    private double volume;
 
 
     @Override
@@ -48,7 +50,7 @@ public class PracticeNameController implements Initializable {
             this.databaseSquare.setStyle("-fx-background-color: " + this.color);
             this.yourSquare.setStyle("-fx-background-color: " + this.color);
             this.compareSquare.setStyle("-fx-background-color: " + this.color);
-            this.titleLabel.setText(this.name);
+            this.titleLabel.setText(this.player.getCurrentPlaylistName());
         });
 
         Runnable task = new Thread( ()-> {
@@ -84,7 +86,7 @@ public class PracticeNameController implements Initializable {
     }
 
     public void playDatabaseButtonPressed() {
-
+        this.player.playCurrentName(this.volume);
     }
 
     public void recordUserButtonPressed() {
@@ -114,7 +116,8 @@ public class PracticeNameController implements Initializable {
         this.color = color;
     }
 
-    public void setName(String currentPlaylistName) {
-        this.name = currentPlaylistName;
+    public void setPlayer(Player player, double volume) {
+        this.player = player;
+        this.volume = volume;
     }
 }
