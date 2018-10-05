@@ -12,6 +12,8 @@ import sample.model.Score;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class PracticeNameController implements Initializable {
@@ -31,9 +33,12 @@ public class PracticeNameController implements Initializable {
     @FXML private Button playUserButton;
     @FXML private Button saveUserButton;
     @FXML private Button compareButton;
+    @FXML private Button recordButton;
     @FXML private Spinner<Integer> compareSpinner;
     private Score score = Score.getInstance();
     private double volume;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+    private String latestRecordedName;
 
 
     @Override
@@ -91,11 +96,36 @@ public class PracticeNameController implements Initializable {
     public void recordUserButtonPressed() {
         this.scoreLabel.setText("Current Score: " + score.nameRecorded());
         this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
-        this.playUserButton.setDisable(false);
-        this.saveUserButton.setDisable(false);
-        this.compareButton.setDisable(false);
         this.mivLevel.setStyle("-fx-accent: #b7deff");
+        
         // TODO Record user audio for, clean audio
+        this.player.stopAudioPlayback();
+        this.recordButton.setText("Recording...");
+        this.recordButton.setDisable(true);
+        
+        this.latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getCurrentPlaylistName();
+        Runnable task = new Thread( ()-> {
+            try {
+                recordAttempt();
+                Platform.runLater( ()-> {
+                	// Enable play, save and compare after recording is made
+                	this.recordButton.setDisable(false);
+                	this.playUserButton.setDisable(false);
+                    this.saveUserButton.setDisable(false);
+                    this.compareButton.setDisable(false);
+                });
+            } catch (InterruptedException | IOException e) {
+                alert.unkownError();
+            }
+        });
+        new Thread(task).start();
+    }
+    
+    public void recordAttempt() throws InterruptedException, IOException {
+        String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -f alsa -i default -t 5 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav 2> /dev/null; " +
+                "ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
+        Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+        process.waitFor();
     }
 
     public void playUserButtonPressed() {

@@ -37,7 +37,7 @@
                   <Font name="Gargi" size="14.5" />
                </font>
             </Label>
-            <Button layoutX="191.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#recordUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Record" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
+            <Button fx:id="recordButton" layoutX="191.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#recordUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Record" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
             <Label layoutX="13.0" layoutY="130.0" text="Play your recorded version:" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="Gargi" size="14.5" />
