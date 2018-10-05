@@ -5,11 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
 import sample.model.Player;
 import sample.model.Score;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,7 @@ public class PracticeNameController implements Initializable {
     private double volume;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
     private String latestRecordedName;
+    private MediaPlayer mediaPlayer;
 
 
     @Override
@@ -98,7 +102,6 @@ public class PracticeNameController implements Initializable {
         this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
         this.mivLevel.setStyle("-fx-accent: #b7deff");
         
-        // TODO Record user audio for, clean audio
         this.player.stopAudioPlayback();
         this.recordButton.setText("Recording...");
         this.recordButton.setDisable(true);
@@ -129,7 +132,10 @@ public class PracticeNameController implements Initializable {
     }
 
     public void playUserButtonPressed() {
-    	// TODO Play user audio
+    	this.player.stopAudioPlayback();
+    	String path = System.getProperty("user.dir") + "/names/temp/" + this.latestRecordedName + ".wav";
+    	this.mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+    	this.mediaPlayer.play();
     }
 
     public void saveUserButtonPressed() {
