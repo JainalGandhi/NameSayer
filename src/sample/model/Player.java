@@ -147,9 +147,9 @@ public class Player {
 	private void createSingleWavFile(String name) throws IOException {
 		PlayListItem item = new PlayListItem(name);
 
-		if (name.contains(" ") || name.contains("-")) {
+		if (name.contains(" ") || name.contains("-") || name.contains("_")) {
 			removeConcatFile();
-			String[] names = name.split(" |-");
+			String[] names = name.split(" |-|_");
 			item.setNamesAmount(names.length);
 			name = name.replace(" ", "_");
 			name = name.replace("-", "_");
@@ -253,4 +253,6 @@ public class Player {
 	public String getCurrentName() {
 		return currentName;
 	}
+
+	public String getCurrentPlaylistName() { return this.playlistNames.get(this.currentNameIndex); }
 }
