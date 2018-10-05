@@ -12,8 +12,11 @@ import sample.model.MicrophoneTester;
 import sample.model.Player;
 import sample.model.Score;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -141,8 +144,23 @@ public class PracticeNameController implements Initializable {
     	this.mediaPlayer.play();
     }
 
-    public void saveUserButtonPressed() {
-    	// TODO Save user audio
+    public void saveUserButtonPressed() throws IOException {
+    	// Remove any old user recordings for the same name
+    	String searchUser = "ls names/temp | grep -i *" + this.player.getCurrentPlaylistName() + ".wav";
+		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
+		InputStream stdout = process.getInputStream();
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+		String creation;
+		while ((creation = stdoutBuffered.readLine()) != null) {
+			String delete = "rm " + creation;
+	    	ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
+	    	process2.start();
+		}
+    	
+    	// Save current recording in names/user
+    	String saveCommand = "cp ./names/temp/" + this.latestRecordedName + ".wav ./names/user";
+    	ProcessBuilder process3 = new ProcessBuilder("/bin/bash", "-c", saveCommand);
+		process3.start();
     }
 
     public void doneButtonPressed() {
