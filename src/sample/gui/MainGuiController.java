@@ -266,6 +266,4 @@ public class MainGuiController implements Initializable {
         });
         new Thread(task).start();
     }
-
-
 }
