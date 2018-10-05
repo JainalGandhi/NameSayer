@@ -43,6 +43,8 @@ public class PracticeNameController implements Initializable {
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
     private String latestRecordedName;
     private MediaPlayer mediaPlayer;
+    private File currentDatabaseWavFile;
+    private int compareCount;
 
 
     @Override
@@ -94,6 +96,7 @@ public class PracticeNameController implements Initializable {
     }
 
     public void playDatabaseButtonPressed() {
+    	this.player.stopAudioPlayback();
         this.player.playCurrentName(this.volume);
     }
 
@@ -148,7 +151,39 @@ public class PracticeNameController implements Initializable {
     }
 
     public void compareButtonPressed() {
-    	// TODO Compare both audio X times
+    	this.currentDatabaseWavFile = this.player.getCurrentWav();
+    	this.player.stopAudioPlayback();
+    	int compare = compareSpinner.getValue();
+    	this.compareCount = compare;
+    	
+    	// Recursively compare
+    	compareRecordings();
+    }
+    
+    public void compareRecordings() {
+    	if (this.compareCount == 0) {
+    		return;
+    	}
+    	
+    	this.compareCount--;
+    	this.mediaPlayer = new MediaPlayer(new Media(this.currentDatabaseWavFile.toURI().toString()));
+		this.mediaPlayer.play();
+		
+		this.mediaPlayer.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				String path = System.getProperty("user.dir") + "/names/temp/" + latestRecordedName + ".wav";
+		    	mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+	    		mediaPlayer.play();
+	    		
+	    		mediaPlayer.setOnEndOfMedia(new Runnable() {
+	    			@Override
+	    			public void run() {
+	    				compareRecordings();
+	    			}
+	    		});
+			}
+		});
     }
 
     public void setColor(String color) {

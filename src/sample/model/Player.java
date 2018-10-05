@@ -33,6 +33,10 @@ public class Player {
 		this.text = text;
 	}
 	
+	public File getCurrentWav() {
+		return playList.get(currentNameIndex).getWav();
+	}
+	
 	public void playCurrentName(double volume) {
 		stopAudioPlayback();
 		File file = playList.get(currentNameIndex).getWav();
