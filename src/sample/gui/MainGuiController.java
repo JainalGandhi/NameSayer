@@ -155,7 +155,7 @@ public class MainGuiController implements Initializable {
         }
         setNowPlaying();
     }
-    
+
     private void setNowPlaying() {
     	nowPlayingText.setText(player.getNowPlaying());
     }
@@ -237,6 +237,7 @@ public class MainGuiController implements Initializable {
             PracticeNameController controller = fxmlLoader.getController();
             controller.setScoreLabel(this.currentScore);
             controller.setColor(colorProgression[this.level]);
+            controller.setName(this.player.getCurrentPlaylistName());
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root, 680, 500));

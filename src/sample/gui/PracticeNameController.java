@@ -20,6 +20,7 @@ public class PracticeNameController implements Initializable {
     private Boolean functioning = true;
     private Label scoreLabel;
     private String color;
+    private String name;
 
 
     @FXML private AnchorPane databaseSquare;
@@ -47,6 +48,7 @@ public class PracticeNameController implements Initializable {
             this.databaseSquare.setStyle("-fx-background-color: " + this.color);
             this.yourSquare.setStyle("-fx-background-color: " + this.color);
             this.compareSquare.setStyle("-fx-background-color: " + this.color);
+            this.titleLabel.setText(this.name);
         });
 
         Runnable task = new Thread( ()-> {
@@ -110,5 +112,9 @@ public class PracticeNameController implements Initializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public void setName(String currentPlaylistName) {
+        this.name = currentPlaylistName;
     }
 }
