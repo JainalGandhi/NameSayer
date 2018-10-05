@@ -164,6 +164,9 @@ public class PracticeNameController implements Initializable {
     	String saveCommand = "cp ./names/temp/" + this.latestRecordedName + ".wav ./names/user";
     	ProcessBuilder process3 = new ProcessBuilder("/bin/bash", "-c", saveCommand);
 		process3.start();
+		
+		// Alert user to successful save
+		alert.redordingSaved();
     }
 
     public void doneButtonPressed() {
