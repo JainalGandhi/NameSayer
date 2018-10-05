@@ -30,7 +30,11 @@ public class PlayListItem {
 	public void setNamesAmount(int names) {
 		this.names = names;
 	}
-	
+
+	public String getName() {
+		return this.name;
+	}
+
 	public String getNowPlayingText() {
 		String text = "Now Playing: ";
 		if (warnings.size() >= names) {

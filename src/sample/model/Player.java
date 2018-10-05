@@ -245,5 +245,5 @@ public class Player {
 		}
 	}
 
-	public String getCurrentPlaylistName() { return this.playlistNames.get(this.currentNameIndex); }
+	public String getCurrentPlaylistName() { return this.playList.get(this.currentNameIndex).getName(); }
 }
