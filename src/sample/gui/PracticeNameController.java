@@ -112,7 +112,7 @@ public class PracticeNameController implements Initializable {
         this.recordButton.setText("Recording...");
         this.recordButton.setDisable(true);
         
-        this.latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getCurrentPlaylistName();
+        this.latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getCurrentPlaylistName().replaceAll(" ", "_");
         Runnable task = new Thread( ()-> {
             try {
                 recordAttempt();
@@ -131,7 +131,8 @@ public class PracticeNameController implements Initializable {
     }
     
     public void recordAttempt() throws InterruptedException, IOException {
-        String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -f alsa -i default -t 5 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav 2> /dev/null; " +
+        String RECORD_NAME_ATTEMPT_COMMAND = "rm names/temp/temp.wav;"
+        		+ " ffmpeg -f alsa -i default -t 5 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav 2> /dev/null; " +
                 "ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
         Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
         process.waitFor();
@@ -146,13 +147,14 @@ public class PracticeNameController implements Initializable {
 
     public void saveUserButtonPressed() throws IOException {
     	// Remove any old user recordings for the same name
-    	String searchUser = "ls names/temp | grep -i *" + this.player.getCurrentPlaylistName() + ".wav";
+    	String searchUser = "ls names/user | grep -i *" + this.player.getCurrentPlaylistName() + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
 		InputStream stdout = process.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String creation;
 		while ((creation = stdoutBuffered.readLine()) != null) {
-			String delete = "rm " + creation;
+			System.out.println(creation);
+			String delete = "rm names/user/" + creation;
 	    	ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
 	    	process2.start();
 		}
