@@ -23,6 +23,7 @@ public class Player {
 	private List<File> wavFilesPlaylist = new ArrayList<File>();
 	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
 	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
+	private String workingName;
 	
 	private MediaPlayer mediaPlayer;
 	
@@ -131,7 +132,6 @@ public class Player {
 	public void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			// Name needs concatenation
-			// TODO only basic concatenation if possible implemented, need to equalize volume etc
 			createSingleWavFile(name);
 		}
 	}
@@ -154,7 +154,11 @@ public class Player {
 					item.addWarning(singleName);
 				}
 			}
-			createConcatFile(name);
+			workingName = name;
+			Runnable task = new Thread( ()-> {
+				createConcatFile();
+			});
+			new Thread(task).start();
 			String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
 			File file = new File(path);
 			wavFilesPlaylist.add(file);
@@ -177,12 +181,14 @@ public class Player {
 		playList.add(item);
 	}
 	
-	public void createConcatFile(String names) {
-		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + names + ".wav";
+	public void createConcatFile() {
+		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + workingName + ".wav; "
+				+ "ffmpeg -i names/temp/" + workingName + ".wav -filter:a loudnorm names/temp/" + workingName + ".wav; "
+						+ "ffmpeg -hide_banner -i names/temp/" + workingName + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + workingName + ".wav 2> /dev/null";
 		try {
-			ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
-			process.start();
-		} catch (IOException e) {
+			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e) {
 			alert.unkownError();
 		}
 	}
