@@ -105,9 +105,6 @@ public class MainGuiController implements Initializable {
             }
             this.searchTextBox.clear();
         }
-
-
-        //TODO add code to add single name to the playlist
     }
 
     public void clearPlaylistButton() {
@@ -217,8 +214,6 @@ public class MainGuiController implements Initializable {
         } catch (IOException e) {
             this.alert.unkownError();
         }
-        // TODO whatever needs to be done here
-
     }
 
     public void nextNameButtonPressed(){
