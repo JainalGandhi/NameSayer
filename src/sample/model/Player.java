@@ -236,7 +236,9 @@ public class Player {
 	}
 	
 	public String createFilePath(String name) throws IOException {
-		// TODO currently takes first match regardless of quality -> When implementing based on rating, make it take the same one each time (ie don't randomise from all good rated files)
+		//TODO currently takes first match regardless of quality -> When implementing based on rating, make it take the same one each time (ie don't randomise from all good rated files)
+		//TODO I think a way for you to do it is to ls them with the alphabetically modifier, and then take the first one that isn't in the bad quality file. If you go through all of the lines,
+		// TODO and they are all bad quality then just take the last item.
 		// name is a singular name, find file
 		String commandDatabase = "ls names/database | grep -i _" + name;
 		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
