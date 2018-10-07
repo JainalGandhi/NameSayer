@@ -1,10 +1,6 @@
 package sample.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -236,20 +232,41 @@ public class Player {
 	}
 	
 	public String createFilePath(String name) throws IOException {
-		//TODO currently takes first match regardless of quality -> When implementing based on rating, make it take the same one each time (ie don't randomise from all good rated files)
-		//TODO I think a way for you to do it is to ls them with the alphabetically modifier, and then take the first one that isn't in the bad quality file. If you go through all of the lines,
-		// TODO and they are all bad quality then just take the last item.
+
+		// Find badly rated names
+		List<String> badCreations = new ArrayList<String>();
+		File badRated = new File(System.getProperty("user.dir") + "/names/badQualityRecordings.txt");
+		BufferedReader br = new BufferedReader(new FileReader(badRated));
+		String str;
+		while ((str = br.readLine()) != null) {
+			badCreations.add(str);
+		}
+
 		// name is a singular name, find file
 		String commandDatabase = "ls names/database | grep -i _" + name;
 		Process processDatabase = new ProcessBuilder("/bin/bash", "-c", commandDatabase).start();
 		InputStream stdout = processDatabase.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String creation;
-		// if a file exists in the database, add the wav file to the playlist of files, otherwise search the user files
+
+		// Go through files present
+		// If such a file is rated badly, go on to the next file present
+		// If all files are rated badly, take the first one always
 		if ((creation = stdoutBuffered.readLine()) != null) {
 			String path = System.getProperty("user.dir") + "/names/database/" + creation;
+			String firstPath = path;
+			for (String creations : badCreations) {
+				if (creations.equals(path)) {
+					creation = stdoutBuffered.readLine();
+					if (creation == null) {
+						return firstPath;
+					}
+					path = System.getProperty("user.dir") + "/names/database/" + creation;
+				}
+			}
 			return path;
 		}
+		// Because we don't make available to option for deletion, this else statement should never be reached
 		else {
 			String commandUser = "ls names/user | grep -i _" + name;
 			Process processUser = new ProcessBuilder("/bin/bash", "-c", commandUser).start();
