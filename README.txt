@@ -29,3 +29,15 @@ in the playlist. You have the options to play the name again and record your own
 If a recording has been made, it can be played back, or compared to the original a number
 of times. It can also be saved, allowing for it to be played at a later time from the
 main screen under past recording.
+
+Scoring:
+To increase your score, you have to open the practice module and record yourself practicing
+each name. If the record button is not pressed, and you change to a different name, then
+your score/streak goes back to 0. As your score increases, you may receive new skins, which
+act as rewards.
+
+Target Audience:
+The target audience for this application is a universtiy lecturer. To satisfy this, we
+went for a minimal theme. A lecturer does not want anything too animated or fancy.
+We also had a bonus feature of allowing the user to import multiple text files (perhaps
+one per course he teaches) so he can learn all student names from all courses at once.
