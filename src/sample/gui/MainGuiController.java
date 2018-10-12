@@ -18,15 +18,9 @@ import sample.model.NamesCollection;
 import sample.model.Player;
 import sample.model.Score;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainGuiController implements Initializable {
 
@@ -110,7 +104,18 @@ public class MainGuiController implements Initializable {
     public void clearPlaylistButton() {
         clearTempData();
         this.currentScore.setText("Current Score: " + score.differentNameRequested());
+        player.stopAudioPlayback();
         this.nowPlayingText.clear();
+
+        try {
+            BufferedWriter bf = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/pastplaylists/" + new Date() +  ".txt"));
+            bf.write(this.mainTextArea.getText());
+            bf.flush();
+            bf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.mainTextArea.clear();
     }
 
@@ -118,9 +123,7 @@ public class MainGuiController implements Initializable {
      * Add contents of one or more text files to the text area
      */
     public void importTextFileButtonPressed() {
-        this.mainTextArea.clear();
-        player.stopAudioPlayback();
-        clearTempData();
+        clearPlaylistButton();
     	FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");

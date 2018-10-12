@@ -14,7 +14,7 @@ public class DirectoryMaintainer {
     private Pattern pattern = Pattern.compile("se206_(\\d+)-(\\d+)-(\\d+)_(\\d+)-(\\d+)-(\\d+)_(.+).wav");
 
     public void create() throws InterruptedException, IOException {
-        String CREATE_DIR = "mkdir -p ./names ./names/temp ./names/user ./names/database; touch ./names/badQualityRecordings.txt";
+        String CREATE_DIR = "mkdir -p ./names ./pastplaylists ./names/temp ./names/user ./names/database; touch ./names/badQualityRecordings.txt";
         Process process = new ProcessBuilder("/bin/bash", "-c", CREATE_DIR).start();
         process.waitFor();
     }
