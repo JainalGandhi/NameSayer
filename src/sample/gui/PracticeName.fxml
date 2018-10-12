@@ -4,10 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.PracticeNameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.PracticeNameController">
       <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="25.0" text="Practicing Name" textAlignment="CENTER" underline="true" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <font>
             <Font name="Gargi" size="33.0" />
@@ -24,7 +25,10 @@
                   <Font name="Gargi" size="14.5" />
                </font>
             </Label>
-            <Button layoutX="190.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playDatabaseButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Play" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
+            <Button layoutX="190.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playDatabaseButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Play" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <tooltip>
+            <Tooltip text="Play the databse version of the name" />
+         </tooltip></Button>
       </AnchorPane>
       <AnchorPane fx:id="yourSquare" layoutX="357.0" layoutY="107.0" prefHeight="200.0" prefWidth="310.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.rightAnchor="13.0">
             <Label layoutX="69.0" layoutY="14.0" text="Your Recording" underline="true" AnchorPane.topAnchor="6.0">
@@ -37,19 +41,28 @@
                   <Font name="Gargi" size="14.5" />
                </font>
             </Label>
-            <Button fx:id="recordButton" layoutX="191.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#recordUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Record" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
+            <Button fx:id="recordButton" layoutX="191.0" layoutY="48.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#recordUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Record" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <tooltip>
+            <Tooltip text="Record your attempt saying the name" />
+         </tooltip></Button>
             <Label layoutX="13.0" layoutY="130.0" text="Play your recorded version:" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="Gargi" size="14.5" />
                </font>
             </Label>
-            <Button fx:id="playUserButton" disable="true" layoutX="191.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Play" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="130.0" />
+            <Button fx:id="playUserButton" disable="true" layoutX="191.0" layoutY="131.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Play" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="130.0">
+         <tooltip>
+            <Tooltip text="Plays back your recorded attempt of the name" />
+         </tooltip></Button>
             <Label layoutX="11.0" layoutY="160.0" text="Save your recorded version:" AnchorPane.leftAnchor="10.0">
                <font>
                   <Font name="Gargi" size="14.5" />
                </font>
             </Label>
-            <Button fx:id="saveUserButton" disable="true" layoutX="191.0" layoutY="163.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Save" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="160.0" />
+            <Button fx:id="saveUserButton" disable="true" layoutX="191.0" layoutY="163.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveUserButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Save" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="160.0">
+         <tooltip>
+            <Tooltip text="Saves your attempt of the name for future playback" />
+         </tooltip></Button>
             <ProgressBar fx:id="mivLevel" layoutX="48.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" progress="0.0" AnchorPane.leftAnchor="48.0" />
       </AnchorPane>
       <Button cancelButton="true" layoutX="526.0" layoutY="449.0" mnemonicParsing="false" onAction="#doneButtonPressed" prefHeight="33.0" prefWidth="123.0" text="Done" AnchorPane.bottomAnchor="18.0" />
@@ -65,6 +78,9 @@
                </font>
             </Label>
             <Spinner fx:id="compareSpinner" layoutX="344.0" layoutY="48.0" prefHeight="26.0" prefWidth="190.0" />
-            <Button fx:id="compareButton" disable="true" layoutX="537.0" layoutY="48.0" mnemonicParsing="false" onAction="#compareButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Compare" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="10.0" />
+            <Button fx:id="compareButton" disable="true" layoutX="537.0" layoutY="48.0" mnemonicParsing="false" onAction="#compareButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Compare" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="10.0">
+         <tooltip>
+            <Tooltip text="Plays the database recording, followed by your recording, x times" />
+         </tooltip></Button>
       </AnchorPane>
 </AnchorPane>
