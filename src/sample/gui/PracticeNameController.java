@@ -103,7 +103,7 @@ public class PracticeNameController implements Initializable {
         this.recordButton.setText("Recording...");
         configureRecordingState(true);
         
-        String latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getCurrentPlaylistName().replaceAll(" ", "_");
+        String latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getFileNamePart(this.player.getCurrentPlaylistName());
         Runnable task = new Thread( ()-> {
             try {
                 this.player.recordAttempt(latestRecordedName);

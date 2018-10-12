@@ -302,7 +302,7 @@ public class Player {
 	}
 
 	public void saveAttempt() throws IOException {
-		String searchUser = "ls names/user | grep -i [[:digit:]]_" + getCurrentPlaylistName().replaceAll(" ", "_") + ".wav";
+		String searchUser = "ls names/user | grep -i [[:digit:]]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
 		InputStream stdout = process.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
