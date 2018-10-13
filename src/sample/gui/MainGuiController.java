@@ -70,7 +70,7 @@ public class MainGuiController implements Initializable {
         try {
             this.namesCollection.solveAllNames();
         }catch (IOException e) {
-            this.alert.unkownError();
+            this.alert.unknownError();
         }
 
         //Disables the media control(play, next...) buttons when the playlist is empty
@@ -108,7 +108,7 @@ public class MainGuiController implements Initializable {
                 try {
                     player.addToPlaylist(this.searchTextBox.getText());
                 } catch (IOException e) {
-                    alert.unkownError();
+                    alert.unknownError();
                 }
             }
 
@@ -178,7 +178,7 @@ public class MainGuiController implements Initializable {
                     }
                     br.close();
                 } catch (IOException e) {
-                    this.alert.unkownError();
+                    this.alert.unknownError();
                 }
             }
             startSession();
@@ -194,7 +194,7 @@ public class MainGuiController implements Initializable {
             //Creates playlist
             player.formPlaylist();
         } catch (IOException e) {
-            alert.unkownError();
+            alert.unknownError();
         }
         //Sets the now playing label to show current name from playlist
         setNowPlaying();
@@ -235,7 +235,7 @@ public class MainGuiController implements Initializable {
             stage.setResizable(false);
             stage.showAndWait();
         }catch(IOException e){
-            this.alert.unkownError();
+            this.alert.unknownError();
         }
     }
 
@@ -282,7 +282,7 @@ public class MainGuiController implements Initializable {
         try {
             player.playPastRecording(this.volumeSlider.getValue()/100);
         } catch (IOException e) {
-            this.alert.unkownError();
+            this.alert.unknownError();
         }
     }
 
@@ -328,7 +328,7 @@ public class MainGuiController implements Initializable {
                 }
             }
         }catch(IOException e){
-            this.alert.unkownError();
+            this.alert.unknownError();
         }
     }
 
@@ -341,7 +341,7 @@ public class MainGuiController implements Initializable {
             try {
                 this.directoryMaintainer.clearTempDirectory();
             } catch (IOException e) {
-                this.alert.unkownError();
+                this.alert.unknownError();
             }
         });
         new Thread(task).start();

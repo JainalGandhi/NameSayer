@@ -11,7 +11,9 @@ import java.util.Optional;
  */
 public class PopupAlert {
 
-    //Creates alert to inform user that no names have been selected when play button pressed
+    /**
+     * Creates alert to inform user that no names have been selected when play button pressed
+     */
     public void noNameSelected() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Name Selection Error");
@@ -21,7 +23,9 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
-    //Creates alert to inform user that the recording was saved
+    /**
+     * Creates alert to inform user that the recording was saved
+     */
     public void redordingSaved() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Recording Saved");
@@ -31,8 +35,10 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
-    //Creates alert to inform user that an unknown error has occurred
-    public void unkownError() {
+    /**
+     * Creates alert to inform user that an unknown error has occurred
+     */
+    public void unknownError() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Unknown error");
         alert.setHeaderText(null);
@@ -41,6 +47,9 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
+    /**
+     * Alerts user that wav file added to database is of bad quality
+     */
     public void badName() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Bad File Name");
@@ -50,6 +59,10 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
+    /**
+     * Asks user if they wish to equip the new skin they have unlocked
+     * @return user choice to equip skin (true = yes, false = no)
+     */
     public boolean equipNewLevelRequest() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("You Have Unlocked a New Skin Color");
@@ -64,6 +77,9 @@ public class PopupAlert {
         return result.isPresent() && result.get() == buttonTypeYes;
     }
 
+    /**
+     * Alerts user that no past recordings of the current name exists
+     */
     public void noPastRecording() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("No Past Recording");
@@ -73,6 +89,10 @@ public class PopupAlert {
         alert.showAndWait();
     }
 
+    /**
+     * Asks user if they wish to import only first name or full name from the text file
+     * @return  user choice to only import first name (true = first name, false = full name)
+     */
     public boolean importFirstNameStyle() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("How do you wish to import the text file");

@@ -31,7 +31,7 @@ public class StartupScreenController implements Initializable {
             this.directoryMaintainer.create();
             this.directoryMaintainer.clearTempDirectory();
         } catch (IOException | InterruptedException e) {
-            this.alert.unkownError();
+            this.alert.unknownError();
         }
     }
 
@@ -47,7 +47,7 @@ public class StartupScreenController implements Initializable {
                     this.alert.badName();
                 }
             } catch (IOException e) {
-                this.alert.unkownError();
+                this.alert.unknownError();
             }
         }
     }

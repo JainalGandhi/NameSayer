@@ -5,13 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import sample.model.MicrophoneTester;
 import sample.model.Player;
 import sample.model.Score;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -62,7 +60,7 @@ public class PracticeNameController implements Initializable {
             try {
                 testMicrophoneWorking();
             } catch (Exception e) {
-                this.alert.unkownError();
+                this.alert.unknownError();
             }
         });
         new Thread((task)).start();
@@ -84,7 +82,7 @@ public class PracticeNameController implements Initializable {
             }catch(IOException | InterruptedException e){
                 Platform.runLater(()-> {
                     this.functioning = false;
-                    this.alert.unkownError();
+                    this.alert.unknownError();
                 });
             }
         }
@@ -118,7 +116,7 @@ public class PracticeNameController implements Initializable {
 
                 });
             } catch (InterruptedException | IOException e) {
-                alert.unkownError();
+                alert.unknownError();
             }
         });
         new Thread(task).start();
