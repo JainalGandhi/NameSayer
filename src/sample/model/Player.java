@@ -165,10 +165,10 @@ public class Player {
 					item.addWarning(singleName);
 				}
 			}
-			Runnable task = new Thread( ()-> {
+//			Runnable task = new Thread( ()-> {
 				createConcatFile(workingName);
-			});
-			new Thread(task).start();
+//			});
+//			new Thread(task).start();
 			String path = System.getProperty("user.dir") + "/names/temp/" + workingName + ".wav";
 			File file = new File(path);
 			wavFilesPlaylist.add(file);
@@ -197,8 +197,8 @@ public class Player {
 						+ "ffmpeg -hide_banner -i names/temp/" + name + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + name + ".wav 2> /dev/null";
 		try {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e) {
+//			process.waitFor();
+		} catch (IOException e) {
 			alert.unkownError();
 		}
 	}
