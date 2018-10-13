@@ -48,13 +48,11 @@ public class MainGuiController implements Initializable {
     @FXML private Slider volumeSlider;
     @FXML private ToggleButton shuffleToggle;
     @FXML private Button clearPlaylistButton;
-    @FXML private Button playPastRecordingButton;
-
 
     /**
      * Sets the initial requirements of the componenetes of the scene on startup of the stage
-     * @param location
-     * @param resources
+     * @param location unused
+     * @param resources unused
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -160,7 +158,7 @@ public class MainGuiController implements Initializable {
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
         fileChooser.getExtensionFilters().setAll(fileExtensions);
         List<File> allFiles = fileChooser.showOpenMultipleDialog(this.rootPane.getScene().getWindow());
-        if(allFiles != null) {
+        if(allFiles != null && textFilesNotEmpty(allFiles)) {
             //Asks user if they want to only input first name
             boolean importFirstName = this.alert.importFirstNameStyle();
             Runnable task = new Thread(()-> {
@@ -191,6 +189,20 @@ public class MainGuiController implements Initializable {
             });
             new Thread(task).start();
         }
+    }
+
+    /**
+     * Checks if any of the files from the file list is not empty
+     * @param allFiles the list of files to search for non-empty
+     * @return true if not empty, false if all empty
+     */
+    private boolean textFilesNotEmpty(List<File> allFiles) {
+        for(File file : allFiles) {
+            if(file.length() != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
