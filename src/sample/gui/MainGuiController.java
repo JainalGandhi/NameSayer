@@ -136,11 +136,13 @@ public class MainGuiController implements Initializable {
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     String str;
                     while ((str = br.readLine()) != null) {
-                        if(importFirstName) {
-                            String[] strSplit = str.split(" |_");
-                            this.mainTextArea.appendText(strSplit[0] + "\n");
-                        }else {
-                            this.mainTextArea.appendText(str + "\n");
+                        if(!str.isEmpty()) {
+                            if (importFirstName) {
+                                String[] strSplit = str.split(" |_");
+                                this.mainTextArea.appendText(strSplit[0] + "\n");
+                            } else {
+                                this.mainTextArea.appendText(str + "\n");
+                            }
                         }
                     }
                     br.close();
