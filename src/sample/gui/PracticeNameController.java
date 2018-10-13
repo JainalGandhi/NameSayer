@@ -21,7 +21,6 @@ public class PracticeNameController implements Initializable {
     private PopupAlert alert = new PopupAlert();
     private Boolean functioning = true;
     private Label scoreLabel;
-    private String color;
     private Player player;
 
 
@@ -39,23 +38,31 @@ public class PracticeNameController implements Initializable {
     private double volume;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
 
-
+    /**
+     * Sets the initial requirements of the componenetes of the scene on startup of the stage
+     * @param location unused
+     * @param resources unused
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Overrides stage closure so it stops audio playback
         Platform.runLater(()-> titleLabel.getScene().getWindow().setOnCloseRequest(event -> {
             event.consume();
             doneButtonPressed();
         }));
 
+        //Updates style of the progress bad color
         this.mivLevel.setStyle("-fx-accent: #b7deff");
 
+        //Sets color style of the squares to reflect current score
         Platform.runLater( ()-> {
-            this.databaseSquare.setStyle("-fx-background-color: " + this.color);
-            this.yourSquare.setStyle("-fx-background-color: " + this.color);
-            this.compareSquare.setStyle("-fx-background-color: " + this.color);
+            this.databaseSquare.setStyle("-fx-background-color: " + this.score.getColor());
+            this.yourSquare.setStyle("-fx-background-color: " + this.score.getColor());
+            this.compareSquare.setStyle("-fx-background-color: " + this.score.getColor());
             this.titleLabel.setText(this.player.getCurrentPlaylistName());
         });
 
+        //Starts microphone tester
         Runnable task = new Thread( ()-> {
             try {
                 testMicrophoneWorking();
@@ -65,14 +72,22 @@ public class PracticeNameController implements Initializable {
         });
         new Thread((task)).start();
 
+        //Sets inital value and range of compareSpinner
         this.compareSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1));
 
     }
 
+    /**
+     * Sets the lable information before loading of the stage. To be used to reflect score updates
+     * @param label label on main gui window to hold score
+     */
     public void setScoreLabel(Label label) {
         this.scoreLabel = label;
     }
 
+    /**
+     * Lgoic for updating progress bar to reflect audio level
+     */
     private void testMicrophoneWorking() {
         MicrophoneTester tester = new MicrophoneTester();
         while(this.functioning) {
@@ -88,25 +103,36 @@ public class PracticeNameController implements Initializable {
         }
     }
 
+    /**
+     * Plays the database recording on button press
+     */
     public void playDatabaseButtonPressed() {
     	this.player.stopAudioPlayback();
         this.player.playCurrentName(this.volume);
     }
 
+    /**
+     * One record button pressed, will disable the gui and record the user recording
+     */
     public void recordUserButtonPressed() {
+        //Upadates score to reflect new recording made
         this.scoreLabel.setText("Current Score: " + score.nameRecorded());
+
+        //Changes color of miclevel to show recording in progress
         this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
-        
+
+        //Puts gui in recoridng state
         this.player.stopAudioPlayback();
         this.recordButton.setText("Recording...");
         configureRecordingState(true);
-        
+
+        //Records the user
         String latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getFileNamePart(this.player.getCurrentPlaylistName());
         Runnable task = new Thread( ()-> {
             try {
                 this.player.recordAttempt(latestRecordedName);
                 Platform.runLater( ()-> {
-                	// Enable play, save and compare after recording is made
+                	// Enables gui on recording complete
                     configureRecordingState(false);
                     this.playUserButton.setDisable(false);
                     this.saveUserButton.setDisable(false);
@@ -121,45 +147,70 @@ public class PracticeNameController implements Initializable {
         });
         new Thread(task).start();
     }
-    
 
 
+    /**
+     * Plays the user recording on button press
+     */
     public void playUserButtonPressed() {
-        this.player.stopAudioPlayback();
-    	this.player.playLatestUserRecording();
+        Runnable task = new Thread(()-> {
+            this.player.stopAudioPlayback();
+            this.player.playLatestUserRecording();
+        });
+        new Thread(task).start();
     }
 
-    public void saveUserButtonPressed() throws IOException {
-    	// Remove any old user recordings for the same name
-    	this.player.saveAttempt();
-        // Alert user to successful save
-        alert.recordingSaved();
+    /**
+     * Saves user recording into the user file. Displays alert upon success
+     */
+    public void saveUserButtonPressed() {
+        Runnable task = new Thread(()-> {
+            // Remove any old user recordings for the same name
+            try {
+                this.player.saveAttempt();
+                Platform.runLater(()-> this.alert.recordingSaved());
+            } catch (IOException e) {
+                Platform.runLater(()-> this.alert.unknownError());
+            }
+        });
+        new Thread(task).start();
     }
 
+    /**
+     * Closes window on done button pressed
+     */
     public void doneButtonPressed() {
         this.player.stopAudioPlayback();
         this.functioning = false;
         ((Stage) titleLabel.getScene().getWindow()).close();
     }
 
+    /**
+     * On compare button pressed, will compare the database name and user recording the selected number of times
+     */
     public void compareButtonPressed() {
         this.player.stopAudioPlayback();
-    	
-    	// Recursively compare
-    	this.player.compareRecordings((int) this.compareSpinner.getValue());
-    }
-    
-
-
-    public void setColor(String color) {
-        this.color = color;
+        Runnable task = new Thread(()-> {
+            // Recursively compare
+            this.player.compareRecordings(this.compareSpinner.getValue());
+        });
+        new Thread(task).start();
     }
 
+    /**
+     * Sets the player information before loading of the stage
+     * @param player the player instance
+     * @param volume the current set volume level
+     */
     public void setPlayer(Player player, double volume) {
         this.player = player;
         this.volume = volume;
     }
 
+    /**
+     * Configures Gui for recording of a name. This disables/enables databaseSqaure, compareSquare and yourSquare panes
+     * @param state disables if true, enables if false
+     */
     public void configureRecordingState(boolean state) {
         this.databaseSquare.setDisable(state);
         this.compareSquare.setDisable(state);

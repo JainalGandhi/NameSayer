@@ -26,11 +26,7 @@ public class MainGuiController implements Initializable {
 
     private final static int MIN_WINDOW_WIDTH = 1150;
     private final static int MIN_WINDOW_HEIGHT = 800;
-    private final static String[] colorProgression = new String[]{"rgba(216,233,238,0.91)", "rgba(238,169,171,0.75)", "rgba(255,0,22,0.68)", "rgba(197,238,188,0.91)", "rgba(142,30,255,0.4)"};
-    private final static int maxLevel = colorProgression.length-1;
 
-    private int level = 0;
-    private int nextGoal = 10;
     private DirectoryMaintainer directoryMaintainer = new DirectoryMaintainer();
     private Player player = new Player();
     private Score score = Score.getInstance();
@@ -328,7 +324,6 @@ public class MainGuiController implements Initializable {
             Parent root = fxmlLoader.load();
             PracticeNameController controller = fxmlLoader.getController();
             controller.setScoreLabel(this.currentScore);
-            controller.setColor(colorProgression[this.level]);
             //Passes player and volume as parameters to control playback of the current name
             controller.setPlayer(this.player, this.volumeSlider.getValue()/100);
             Stage stage = new Stage();
@@ -337,16 +332,9 @@ public class MainGuiController implements Initializable {
             stage.setTitle("Practicing Name");
             stage.setResizable(false);
             stage.showAndWait();
-            //On close of practice module, checks if user has unlocked new skin color
-            if(this.level!=maxLevel && this.score.getCurrentScore()>=nextGoal){
-                this.nextGoal+=this.nextGoal;
-                if(this.alert.equipNewLevelRequest()) {
-                    //Upgrades skin structure if meets requirements and user says yes to alert
-                    this.level++;
-                    this.topPane.setStyle("-fx-background-color: " + colorProgression[this.level]);
-                    this.sessionPlaybackControl.setStyle("-fx-background-color: " + colorProgression[this.level]);
-                }
-            }
+            //On close of practice module, checks if new skin color has been unlocked
+            this.topPane.setStyle("-fx-background-color: " + this.score.getColor());
+            this.sessionPlaybackControl.setStyle("-fx-background-color: " + this.score.getColor());
         }catch(IOException e){
             this.alert.unknownError();
         }
