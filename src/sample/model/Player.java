@@ -39,29 +39,30 @@ public class Player {
 	public void playCurrentName(double volume) {
 		stopAudioPlayback();
 		File file = playList.get(currentNameIndex).getWav();
-		try {
-			mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
-			mediaPlayer.setVolume(volume);
-			mediaPlayer.play();
-			mediaPlayer.setOnError( ()-> {
-				Runnable task = new Thread( ()-> {
-					try {
-						String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -y -i " + file.toString() + " " + file.toString();
-						Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
-						process.waitFor();
+            Runnable task = new Thread( ()-> {
+                try {
+                mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+                mediaPlayer.setVolume(volume);
+                mediaPlayer.play();
+                mediaPlayer.setOnError( ()-> {
 
-                        Platform.runLater(() -> {
-                            mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
-                            mediaPlayer.play();
-                        });
-                    }catch(IOException | InterruptedException e) {
-					    alert.unkownError();
-                    }
-				});
-				new Thread(task).start();
-			});
-		}
-		catch (Exception e) {}
+                        try {
+                            String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -y -i " + file.toString() + " " + file.toString();
+                            Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+                            process.waitFor();
+
+                            Platform.runLater(() -> {
+                                mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+                                mediaPlayer.play();
+                            });
+                        }catch(IOException | InterruptedException e) {
+                            alert.unknownError();
+                        }
+
+                });
+            } catch (Exception e) {}
+            });
+            new Thread(task).start();
 	}
 	
 	public void stopAudioPlayback() {
@@ -199,7 +200,7 @@ public class Player {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
 //			process.waitFor();
 		} catch (IOException e) {
-			alert.unkownError();
+			alert.unknownError();
 		}
 	}
 	
@@ -210,7 +211,7 @@ public class Player {
 			ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
 			process.start();
 		} catch (IOException e) {
-			alert.unkownError();
+			alert.unknownError();
 		}
 	}
 	
@@ -223,7 +224,7 @@ public class Player {
 				ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
 				process.start();
 			} catch (IOException e) {
-				alert.unkownError();
+				alert.unknownError();
 			}
 		}
 	}

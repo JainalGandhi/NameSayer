@@ -65,7 +65,7 @@ public class StartupScreenController implements Initializable {
             stage.show();
             currentStage.close();
         }catch (IOException e){
-            System.out.println("error");
+            this.alert.unknownError();
         }
 
     }

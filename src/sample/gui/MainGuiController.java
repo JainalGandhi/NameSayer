@@ -173,7 +173,7 @@ public class MainGuiController implements Initializable {
                             if (!str.isEmpty()) {
                                 if (importFirstName) {
                                     //Adds first name in file
-                                    String[] strSplit = str.split(" |_");
+                                    String[] strSplit = str.split("[ _]");
                                     Platform.runLater(()->this.mainTextArea.appendText(strSplit[0] + "\n"));
                                 } else {
                                     //Adds entire name in file
@@ -187,7 +187,7 @@ public class MainGuiController implements Initializable {
                         Platform.runLater(()->this.alert.unknownError());
                     }
                 }
-                Platform.runLater(()->startSession());
+                Platform.runLater(this::startSession);
             });
             new Thread(task).start();
         }
