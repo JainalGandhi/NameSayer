@@ -2,6 +2,7 @@ package sample.model;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,20 +73,16 @@ public class Player {
 	public void formPlaylist() throws IOException {
 		playList.clear();
 		playlistNames.clear();
+		playListOriginal.clear();
 		String[] splitText = text.split("\n");
 		if (splitText.length == 0) {
 			alert.noNameSelected();
 		}
 		else {
-			for (String str : splitText) {
-				playlistNames.add(str);
-				currentNameIndex = 0;
-			}
+			playlistNames.addAll(Arrays.asList(splitText));
+			currentNameIndex = 0;
 			createWavFiles();
-		}
-		playListOriginal.clear();
-		for (PlayListItem item : playList) {
-			playListOriginal.add(item);
+			playListOriginal.addAll(playList);
 		}
 	}
 
@@ -153,26 +150,26 @@ public class Player {
 		PlayListItem item = new PlayListItem(name);
 
 		if (name.contains(" ") || name.contains("-") || name.contains("_")) {
-			removeConcatFile();
 			String[] names = name.split(" |-|_");
 			item.setNamesAmount(names.length);
 			name = name.replace(" ", "_");
 			name = name.replace("-", "_");
+			workingName = name;
+			removeConcatFile(workingName);
 			for (String singleName : names) {
 				String path = createFilePath(singleName);
 				if (!path.equals("")) {
-					addToConcatFile(path);
+					addToConcatFile(path, workingName);
 				}
 				else {
 					item.addWarning(singleName);
 				}
 			}
-			workingName = name;
 			Runnable task = new Thread( ()-> {
-				createConcatFile();
+				createConcatFile(workingName);
 			});
 			new Thread(task).start();
-			String path = System.getProperty("user.dir") + "/names/temp/" + name + ".wav";
+			String path = System.getProperty("user.dir") + "/names/temp/" + workingName + ".wav";
 			File file = new File(path);
 			wavFilesPlaylist.add(file);
 			item.setWav(file);
@@ -194,10 +191,10 @@ public class Player {
 		playList.add(item);
 	}
 	
-	public void createConcatFile() {
-		String command = "ffmpeg -f concat -safe 0 -i names/concat.txt -c copy names/temp/" + workingName + ".wav; "
-				+ "ffmpeg -i names/temp/" + workingName + ".wav -filter:a loudnorm names/temp/" + workingName + ".wav; "
-						+ "ffmpeg -hide_banner -i names/temp/" + workingName + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + workingName + ".wav 2> /dev/null";
+	public void createConcatFile(String name) {
+		String command = "ffmpeg -f concat -safe 0 -i names/temp/" + name + ".txt -c copy names/temp/" + name + ".wav; "
+				+ "ffmpeg -i names/temp/" + name + ".wav -filter:a loudnorm names/temp/" + name + ".wav; "
+						+ "ffmpeg -hide_banner -i names/temp/" + name + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + name + ".wav 2> /dev/null";
 		try {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
 			process.waitFor();
@@ -206,8 +203,8 @@ public class Player {
 		}
 	}
 	
-	public void addToConcatFile(String path) {
-		String concatPath = "\'" + System.getProperty("user.dir") + "/names/concat.txt" + "\'";
+	public void addToConcatFile(String path, String name) {
+		String concatPath = "\'" + System.getProperty("user.dir") + "/names/temp/" + name + ".txt" + "\'";
 		String command = "echo file " + path + " >> " + concatPath;
 		try {
 			ProcessBuilder process = new ProcessBuilder("/bin/bash", "-c", command);
@@ -217,8 +214,8 @@ public class Player {
 		}
 	}
 	
-	public void removeConcatFile() {
-		String path = System.getProperty("user.dir") + "/names/concat.txt";
+	public void removeConcatFile(String name) {
+		String path = System.getProperty("user.dir") + "/names/temp/" + name + ".txt";
 		File concat = new File(path);
 		if (concat.exists()) {
 			String command = "rm " + path;
