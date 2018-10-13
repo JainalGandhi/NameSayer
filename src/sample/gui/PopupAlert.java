@@ -26,7 +26,7 @@ public class PopupAlert {
     /**
      * Creates alert to inform user that the recording was saved
      */
-    public void redordingSaved() {
+    public void recordingSaved() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Recording Saved");
         alert.setHeaderText(null);

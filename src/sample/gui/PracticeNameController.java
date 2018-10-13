@@ -133,7 +133,7 @@ public class PracticeNameController implements Initializable {
     	// Remove any old user recordings for the same name
     	this.player.saveAttempt();
         // Alert user to successful save
-        alert.redordingSaved();
+        alert.recordingSaved();
     }
 
     public void doneButtonPressed() {
