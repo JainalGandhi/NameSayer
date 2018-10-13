@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.PracticeNameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.PracticeNameController">
       <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="25.0" text="Practicing Name" textAlignment="CENTER" underline="true" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <font>
             <Font name="Gargi" size="33.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="databaseSquare" layoutX="13.0" layoutY="107.0" prefHeight="200.0" prefWidth="310.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.leftAnchor="13.0">
+      <AnchorPane fx:id="databaseSquare" layoutX="13.0" layoutY="107.0" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.leftAnchor="13.0">
             <Label layoutX="48.0" layoutY="14.0" text="Database Recording" underline="true" AnchorPane.topAnchor="6.0">
                <font>
                   <Font name="Gargi" size="22.0" />
@@ -30,7 +30,7 @@
             <Tooltip text="Play the databse version of the name" />
          </tooltip></Button>
       </AnchorPane>
-      <AnchorPane fx:id="yourSquare" layoutX="357.0" layoutY="107.0" prefHeight="200.0" prefWidth="310.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.rightAnchor="13.0">
+      <AnchorPane fx:id="yourSquare" layoutX="357.0" layoutY="107.0" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.rightAnchor="13.0">
             <Label layoutX="69.0" layoutY="14.0" text="Your Recording" underline="true" AnchorPane.topAnchor="6.0">
                <font>
                   <Font name="Gargi" size="22.0" />
@@ -63,7 +63,7 @@
          <tooltip>
             <Tooltip text="Saves your attempt of the name for future playback" />
          </tooltip></Button>
-            <ProgressBar fx:id="mivLevel" layoutX="48.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" progress="0.0" AnchorPane.leftAnchor="48.0" />
+            <ProgressBar fx:id="mivLevel" layoutX="48.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="200.0" progress="0.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" />
       </AnchorPane>
       <Button cancelButton="true" layoutX="526.0" layoutY="449.0" mnemonicParsing="false" onAction="#doneButtonPressed" prefHeight="33.0" prefWidth="123.0" text="Close" AnchorPane.bottomAnchor="18.0" />
       <AnchorPane fx:id="compareSquare" layoutX="15.0" layoutY="341.0" prefHeight="90.0" prefWidth="650.0" style="-fx-background-color: rgba(216,233,238,0.91);" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
@@ -77,7 +77,7 @@
                   <Font name="Gargi" size="22.0" />
                </font>
             </Label>
-            <Spinner fx:id="compareSpinner" layoutX="344.0" layoutY="48.0" prefHeight="26.0" prefWidth="190.0" />
+            <Spinner fx:id="compareSpinner" layoutX="344.0" layoutY="48.0" prefHeight="26.0" prefWidth="280.0" />
             <Button fx:id="compareButton" disable="true" layoutX="537.0" layoutY="48.0" mnemonicParsing="false" onAction="#compareButtonPressed" prefHeight="26.0" prefWidth="99.0" text="Compare" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="10.0">
          <tooltip>
             <Tooltip text="Plays the database recording, followed by your recording, x times" />

@@ -333,7 +333,7 @@ public class MainGuiController implements Initializable {
             controller.setPlayer(this.player, this.volumeSlider.getValue()/100);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root, 680, 500));
+            stage.setScene(new Scene(root, 800, 500));
             stage.setTitle("Practicing Name");
             stage.setResizable(false);
             stage.showAndWait();
