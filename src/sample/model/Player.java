@@ -339,7 +339,7 @@ public class Player {
 		});
 	}
 
-	public void playPastRecording() throws IOException {
+	public void playPastRecording(double volume) throws IOException {
 		String searchUser = "ls names/user/*[0-9]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
 		InputStream stdout = process.getInputStream();
@@ -349,6 +349,7 @@ public class Player {
 			this.alert.noPastRecording();
 		}else {
 			mediaPlayer = new MediaPlayer(new Media(new File(line).toURI().toString()));
+			mediaPlayer.setVolume(volume);
 			mediaPlayer.play();
 		}
 	}

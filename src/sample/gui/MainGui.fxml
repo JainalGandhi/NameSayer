@@ -58,7 +58,7 @@
                <Tooltip text="Import external text file(s) into the playlist. This will clear the current playlist." />
             </tooltip></Button>
             <TextArea id="mainTextArea" fx:id="mainTextArea" disable="true" editable="false" prefHeight="365.0" prefWidth="738.0" stylesheets="@myStyle.css" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="80.0" />
-            <Button layoutX="572.0" layoutY="35.0" mnemonicParsing="false" onAction="#clearPlaylistButton" prefHeight="38.0" prefWidth="81.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="90.0">
+            <Button fx:id="clearPlaylistButton" disable="true" layoutX="572.0" layoutY="35.0" mnemonicParsing="false" onAction="#clearPlaylistButtonPressed" prefHeight="38.0" prefWidth="81.0" text="Clear Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="90.0">
                 <font>
                     <Font size="12.0" />
                 </font>
