@@ -11,26 +11,6 @@ import java.util.Optional;
  */
 public class PopupAlert {
 
-    //Creates alert to inform user the microphone is not working
-    public void micNotWorking() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Microphone Not Working");
-        alert.setHeaderText(null);
-        alert.setContentText("Your microphone audio is not working. Please connect another microphone.");
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
-
-    //Creates alert to inform user the microphone is working
-    public void micWorking() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Microphone Working");
-        alert.setHeaderText(null);
-        alert.setContentText("Your microphone audio works.");
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
-
     //Creates alert to inform user that no names have been selected when play button pressed
     public void noNameSelected() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -60,31 +40,12 @@ public class PopupAlert {
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
-    
-  //Creates alert to inform user that no varient has been selected when play button pressed
-    public void noVarientSelected() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Variant Selection Error");
-        alert.setHeaderText(null);
-        alert.setContentText("No variant was selected to practice. Please select a variant before pressing play.");
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
 
     public void badName() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Bad File Name");
         alert.setHeaderText(null);
         alert.setContentText("One or more names you tried to upload had a bad name. It must follow the structure: \"se206_xx-xx-xxxx_xx-xx-xx_name.wav\"");
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.showAndWait();
-    }
-
-    public void badNameInDatabase() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Bad File in Database");
-        alert.setHeaderText(null);
-        alert.setContentText("There is an incorrectly named file in the database. Please delete it and then relaunch the application");
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
@@ -110,5 +71,19 @@ public class PopupAlert {
         alert.setContentText("There is no past user recording for that name. Please record one first.");
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
+    }
+
+    public boolean importFirstNameStyle() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("How do you wish to import the text file");
+        alert.setHeaderText(null);
+        alert.setContentText("Do you wish to import only first names or full names");
+
+        ButtonType buttonTypeFirst = new ButtonType("First Name");
+        ButtonType buttonTypeFull = new ButtonType("Full Name");
+        alert.getButtonTypes().setAll(buttonTypeFirst, buttonTypeFull);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == buttonTypeFirst;
     }
 }

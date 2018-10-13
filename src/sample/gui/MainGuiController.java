@@ -89,7 +89,7 @@ public class MainGuiController implements Initializable {
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
 
             if(this.mainTextArea.getText().split("\n").length == 1) {
-                startStopSessionButtonPressed();
+                startSession();
             }else {
                 try {
                     player.addToPlaylist(this.searchTextBox.getText());
@@ -124,31 +124,35 @@ public class MainGuiController implements Initializable {
      */
     public void importTextFileButtonPressed() {
         clearPlaylistButton();
-    	FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
         FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Text Files", "*.txt");
         fileChooser.getExtensionFilters().setAll(fileExtensions);
         List<File> allFiles = fileChooser.showOpenMultipleDialog(this.rootPane.getScene().getWindow());
         if(allFiles != null) {
-        	for(File file : allFiles) {
+            boolean importFirstName = this.alert.importFirstNameStyle();
+            for(File file : allFiles) {
                 try {
-					BufferedReader br = new BufferedReader(new FileReader(file));
-					String str;
-					while ((str = br.readLine()) != null) {
-						this.mainTextArea.appendText(str + "\n");
-					}
-					br.close();
-				} catch (IOException e) {
-					this.alert.unkownError();
-				}
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    String str;
+                    while ((str = br.readLine()) != null) {
+                        if(importFirstName) {
+                            String[] strSplit = str.split(" |_");
+                            this.mainTextArea.appendText(strSplit[0] + "\n");
+                        }else {
+                            this.mainTextArea.appendText(str + "\n");
+                        }
+                    }
+                    br.close();
+                } catch (IOException e) {
+                    this.alert.unkownError();
+                }
             }
-        }
-        if(!this.mainTextArea.getText().isEmpty()) {
-            startStopSessionButtonPressed();
+            startSession();
         }
     }
 
-    private void startStopSessionButtonPressed() {
+    private void startSession() {
         player.setText(mainTextArea.getText());
         try {
             player.formPlaylist();
@@ -159,7 +163,7 @@ public class MainGuiController implements Initializable {
     }
 
     private void setNowPlaying() {
-    	nowPlayingText.setText(player.getNowPlaying());
+        nowPlayingText.setText(player.getNowPlaying());
     }
 
     public void badQualityButtonPressed() {
@@ -188,14 +192,14 @@ public class MainGuiController implements Initializable {
     }
 
     public void shuffleButtonPressed(){
-    	if (shuffleToggle.isSelected()) {
-    		player.shufflePlayList();
-    		nowPlayingText.setText(player.getNowPlaying());
-    	}
-    	else {
-    		player.orderPlayList();
-    		nowPlayingText.setText(player.getNowPlaying());
-    	}
+        if (shuffleToggle.isSelected()) {
+            player.shufflePlayList();
+            nowPlayingText.setText(player.getNowPlaying());
+        }
+        else {
+            player.orderPlayList();
+            nowPlayingText.setText(player.getNowPlaying());
+        }
     }
 
     public void previousNameButtonPressed(){
