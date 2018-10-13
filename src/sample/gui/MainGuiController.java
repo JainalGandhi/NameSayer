@@ -66,12 +66,16 @@ public class MainGuiController implements Initializable {
             this.rootPane.requestFocus();
         });
 
-        //Determines all names/audio files in the database
-        try {
-            this.namesCollection.solveAllNames();
-        }catch (IOException e) {
-            this.alert.unknownError();
-        }
+        //Determines all names/audio files in the database and loads into search text box
+        Runnable task = new Thread(()-> {
+            try {
+                this.namesCollection.solveAllNames();
+                Platform.runLater(()->this.searchTextBox.setAutocompleteList(this.namesCollection.getAllNamesFirstCap()));
+            } catch (IOException e) {
+                Platform.runLater(()->this.alert.unknownError());
+            }
+        });
+        new Thread(task).start();
 
         //Disables the media control(play, next...) buttons when the playlist is empty
         this.mainTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -83,9 +87,6 @@ public class MainGuiController implements Initializable {
                 this.clearPlaylistButton.setDisable(false);
             }
         });
-
-        //Assigns the autocomplete names list to the custom search text box to be the names in the database
-        this.searchTextBox.setAutocompleteList(this.namesCollection.getAllNamesFirstCap());
 
         //Assigns the default volume slider audio level to 80/100
         this.volumeSlider.setValue(80);
@@ -105,11 +106,14 @@ public class MainGuiController implements Initializable {
             if(this.mainTextArea.getText().split("\n").length == 1) {
                 startSession();
             }else {
-                try {
-                    player.addToPlaylist(this.searchTextBox.getText());
-                } catch (IOException e) {
-                    alert.unknownError();
-                }
+                Runnable task = new Thread(()->{
+                    try {
+                        player.addToPlaylist(this.searchTextBox.getText());
+                    } catch (IOException e) {
+                        Platform.runLater(()->alert.unknownError());
+                    }
+                });
+                new Thread(task).start();
             }
 
             //Resets the searchbox for future user input
@@ -133,7 +137,7 @@ public class MainGuiController implements Initializable {
                 bf.write(str);
                 bf.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Platform.runLater(()->alert.unknownError());
             }
         });
         new Thread(task).start();
@@ -159,29 +163,33 @@ public class MainGuiController implements Initializable {
         if(allFiles != null) {
             //Asks user if they want to only input first name
             boolean importFirstName = this.alert.importFirstNameStyle();
-            //Loops through all selected files by the user
-            for(File file : allFiles) {
-                try {
-                    BufferedReader br = new BufferedReader(new FileReader(file));
-                    String str;
-                    while ((str = br.readLine()) != null) {
-                        if(!str.isEmpty()) {
-                            if (importFirstName) {
-                                //Adds first name in file
-                                String[] strSplit = str.split(" |_");
-                                this.mainTextArea.appendText(strSplit[0] + "\n");
-                            } else {
-                                //Adds entire name in file
-                                this.mainTextArea.appendText(str + "\n");
+            Runnable task = new Thread(()-> {
+                //Loops through all selected files by the user
+                for (File file : allFiles) {
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(file));
+                        String str;
+                        while ((str = br.readLine()) != null) {
+                            if (!str.isEmpty()) {
+                                if (importFirstName) {
+                                    //Adds first name in file
+                                    String[] strSplit = str.split(" |_");
+                                    Platform.runLater(()->this.mainTextArea.appendText(strSplit[0] + "\n"));
+                                } else {
+                                    //Adds entire name in file
+                                    String string = str;
+                                    Platform.runLater(()->this.mainTextArea.appendText(string + "\n"));
+                                }
                             }
                         }
+                        br.close();
+                    } catch (IOException e) {
+                        Platform.runLater(()->this.alert.unknownError());
                     }
-                    br.close();
-                } catch (IOException e) {
-                    this.alert.unknownError();
                 }
-            }
-            startSession();
+                Platform.runLater(()->startSession());
+            });
+            new Thread(task).start();
         }
     }
 
