@@ -3,9 +3,11 @@ package sample.model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class DirectoryMaintainer {
 
@@ -38,6 +40,28 @@ public class DirectoryMaintainer {
             }
         }
         return badFiles;
+    }
+
+    public boolean copyWavFiles(File poo) throws IOException {
+        boolean badFiles = false;
+        String copyTo = System.getProperty("user.dir") + "/names/database/";
+        for(Path file : findWavs(poo)) {
+            if(!Files.exists(Paths.get(copyTo + file.toFile().getName()))) {
+                if(pattern.matcher(file.toFile().getName()).matches()) {
+                    Files.copy(Paths.get(file.toFile().toURI()), Paths.get(copyTo + file.toFile().getName()));
+                }else {
+                    badFiles = true;
+                }
+            }
+        }
+        return badFiles;
+    }
+
+    private static Path[] findWavs(File directory) throws IOException {
+        Path dir = directory.toPath();
+        try (Stream<Path> stream = Files.find(dir, Integer.MAX_VALUE, (path, attributes) -> path.getFileName().toString().endsWith(".wav"))) {
+            return stream.toArray(Path[]::new);
+        }
     }
 
     public void writeBadQuality(String path) {

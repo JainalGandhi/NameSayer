@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.model.DirectoryMaintainer;
@@ -36,14 +37,13 @@ public class StartupScreenController implements Initializable {
     }
 
     public void uploadFilesButtonClicked() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Add Wav Files to Database");
-        FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Wav Files", "*.wav");
-        fileChooser.getExtensionFilters().setAll(fileExtensions);
-        List<File> allFiles = fileChooser.showOpenMultipleDialog(this.rootPane.getScene().getWindow());
-        if(allFiles != null) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Add Files to Database");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File dir = directoryChooser.showDialog(this.rootPane.getScene().getWindow());
+        if(dir != null) {
             try {
-                if(this.directoryMaintainer.copyFileList(allFiles)) {
+                if(this.directoryMaintainer.copyWavFiles(dir)) {
                     this.alert.badName();
                 }
             } catch (IOException e) {

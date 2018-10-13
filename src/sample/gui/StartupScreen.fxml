@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.StartupScreenController">
+<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gui.StartupScreenController">
    <children>
       <Label layoutX="199.0" layoutY="93.0" text="Welcome to Name Sayer" underline="true">
          <font>
             <Font name="Gargi" size="50.0" />
          </font>
       </Label>
-      <Label layoutX="121.0" layoutY="186.0" prefHeight="226.0" prefWidth="708.0" text="Before beginning, please move the database of audio files into the /names/database file. This directory is in the same location as the jar file. Alternatively, use the &quot;Upload Files&quot; button below to select files to upload to the database.When ready, press the &quot;Click to Begin&quot; button to start.&#10;&#10;For more information or help, please view the provided documentation. &#10;" textAlignment="JUSTIFY" wrapText="true">
+      <Label layoutX="121.0" layoutY="186.0" prefHeight="226.0" prefWidth="708.0" text="Before beginning, please move the database of audio files into the /names/database file. This directory is in the same location as the jar file. Alternatively, use the &quot;Upload Files&quot; button below to select folder containing wav files to upload to the database.When ready, press the &quot;Click to Begin&quot; button to start.&#10;&#10;For more information or help, please view the provided documentation. &#10;" textAlignment="JUSTIFY" wrapText="true">
          <font>
             <Font name="Gargi" size="16.0" />
          </font>
@@ -25,12 +25,12 @@
          <tooltip>
             <Tooltip text="Begin using Name Sayer" />
          </tooltip></Button>
-      <Button layoutX="235.0" layoutY="454.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#uploadFilesButtonClicked" prefHeight="60.0" prefWidth="480.0" text="Upload Files">
+      <Button layoutX="235.0" layoutY="454.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#uploadFilesButtonClicked" prefHeight="60.0" prefWidth="480.0" text="Upload Folder">
          <font>
             <Font name="Gargi" size="13.0" />
          </font>
          <tooltip>
-            <Tooltip text="Add wav files to the database of names" />
+            <Tooltip text="Add wav folders located inside a folder to the database of names" />
          </tooltip>
       </Button>
    </children>
