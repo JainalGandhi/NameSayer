@@ -10,6 +10,7 @@ public class PlayListItem {
 	private File wav;
 	private List<String> warnings = new ArrayList<String>();
 	private int names;
+	public Boolean disablePractice = false;
 	
 	public PlayListItem(String name) {
 		this.name = name;
@@ -39,12 +40,15 @@ public class PlayListItem {
 		String text = "Now Playing: ";
 		if (warnings.size() >= names) {
 			text = text + name + "     Warning: Could not find or create name";
+			this.disablePractice = true;
 		}
 		else if (warnings.size() >= 1) {
 			text = text + name + getWarnings();
+			this.disablePractice = false;
 		}
 		else {
 			text = text + name;
+			this.disablePractice = false;
 		}
 		return text;
 	}

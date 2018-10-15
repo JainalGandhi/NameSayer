@@ -129,6 +129,10 @@ public class Player {
 		return playList.get(currentNameIndex).getNowPlayingText();
 	}
 	
+	public PlayListItem getCurrentItem() {
+		return playList.get(currentNameIndex);
+	}
+	
 	public void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			// Name needs concatenation

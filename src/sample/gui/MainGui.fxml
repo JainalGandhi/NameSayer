@@ -91,7 +91,7 @@
             </tooltip>
             </Button>
             <Slider fx:id="volumeSlider" prefHeight="16.0" prefWidth="112.0" snapToTicks="true" GridPane.columnIndex="5" />
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Practice Name" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="7">
+            <Button fx:id="practiceButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#practiceNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Practice Name" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="7">
                 <font>
                     <Font size="12.0" />
                 </font>
@@ -108,7 +108,7 @@
                   <Tooltip text="Shuffle the order of the names in the playlist" />
                </tooltip>
                 </ToggleButton>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
+                <Button fx:id="previousButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#previousNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Previous Name" textAlignment="CENTER" wrapText="true">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
@@ -119,7 +119,7 @@
                   <Tooltip text="Go to previous name in the playlist" />
                </tooltip>
                 </Button>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play" textAlignment="CENTER" wrapText="true">
+                <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play" textAlignment="CENTER" wrapText="true">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
@@ -130,7 +130,7 @@
                   <Tooltip text="Plays the database version of the name" />
                </tooltip>
                 </Button>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
+                <Button fx:id="nextButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
