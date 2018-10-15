@@ -99,6 +99,8 @@ public class MainGuiController implements Initializable {
             this.mainTextArea.appendText(this.searchTextBox.getText() + "\n");
             if(this.mainTextArea.getText().split("\n").length == 1) {
                 startSession();
+                this.searchTextBox.clear();
+                this.searchTextBox.resetAutocompleteTextBox();
             }else {
                 Runnable task = new Thread(()->{
                     try {
@@ -106,13 +108,13 @@ public class MainGuiController implements Initializable {
                     } catch (IOException e) {
                         Platform.runLater(()->alert.unknownError());
                     }
+                    Platform.runLater(()-> {
+                        this.searchTextBox.clear();
+                        this.searchTextBox.resetAutocompleteTextBox();
+                    });
                 });
                 new Thread(task).start();
             }
-
-            //Resets the searchbox for future user input
-            this.searchTextBox.clear();
-            this.searchTextBox.resetAutocompleteTextBox();
         }
     }
 

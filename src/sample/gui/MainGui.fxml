@@ -26,7 +26,7 @@
             </Label>
         </HBox>
         <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="85.0" prefWidth="200.0" AnchorPane.rightAnchor="50.0">
-            <Label fx:id="currentScore" prefHeight="0.0" prefWidth="129.0" text="Current Score: 0">
+            <Label fx:id="currentScore" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="180.0" text="Current Score: 0">
             <font>
                <Font name="Gargi" size="16.0" />
             </font></Label>
@@ -38,11 +38,8 @@
                 <font>
                     <Font name="Gargi" size="17.0" />
                 </font>
-                <padding>
-                    <Insets right="20.0" />
-                </padding>
             </Label>
-            <DynamicAutocompleteTextBox fx:id="searchTextBox" layoutX="123.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="280.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="295.0" />
+            <DynamicAutocompleteTextBox fx:id="searchTextBox" layoutX="123.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="280.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="295.0" />
             <Button layoutX="452.0" layoutY="35.0" mnemonicParsing="false" onAction="#addButtonPressed" prefHeight="38.0" prefWidth="81.0" text="Add to Playlist" textAlignment="CENTER" wrapText="true" AnchorPane.rightAnchor="210.0">
                 <font>
                     <Font size="12.0" />
@@ -133,7 +130,7 @@
                   <Tooltip text="Plays the database version of the name" />
                </tooltip>
                 </Button>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playPastRecordingButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play Past Recording" textAlignment="CENTER" wrapText="true">
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
@@ -144,7 +141,7 @@
                   <Tooltip text="Plays the latest user recording of the name" />
                </tooltip>
                 </Button>
-                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#nextNameButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Next Name" textAlignment="CENTER" wrapText="true">
+                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#playPastRecordingButtonPressed" prefHeight="42.0" prefWidth="82.0" text="Play User Recording" textAlignment="CENTER" wrapText="true">
                     <padding>
                         <Insets left="5.0" />
                     </padding>
