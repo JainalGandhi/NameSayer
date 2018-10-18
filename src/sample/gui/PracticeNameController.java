@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class PracticeNameController implements Initializable {
 
     private PopupAlert alert = new PopupAlert();
-    private Boolean functioning = true;
+    private Boolean functioning;
     private Label scoreLabel;
     private Player player;
 
@@ -34,6 +34,7 @@ public class PracticeNameController implements Initializable {
     @FXML private Button compareButton;
     @FXML private Button recordButton;
     @FXML private Spinner<Integer> compareSpinner;
+
     private Score score = Score.getInstance();
     private double volume;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
@@ -46,7 +47,7 @@ public class PracticeNameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //Overrides stage closure so it stops audio playback
-        Platform.runLater(()-> titleLabel.getScene().getWindow().setOnCloseRequest(event -> {
+        Platform.runLater(()-> this.titleLabel.getScene().getWindow().setOnCloseRequest(event -> {
             event.consume();
             doneButtonPressed();
         }));
@@ -63,14 +64,7 @@ public class PracticeNameController implements Initializable {
         });
 
         //Starts microphone tester
-        Runnable task = new Thread( ()-> {
-            try {
-                testMicrophoneWorking();
-            } catch (Exception e) {
-                this.alert.unknownError();
-            }
-        });
-        new Thread((task)).start();
+        testMicrophoneWorking();
 
         //Sets inital value and range of compareSpinner
         this.compareSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1));
@@ -89,18 +83,25 @@ public class PracticeNameController implements Initializable {
      * Lgoic for updating progress bar to reflect audio level
      */
     private void testMicrophoneWorking() {
-        MicrophoneTester tester = new MicrophoneTester();
-        while(this.functioning) {
+        Runnable task = new Thread( ()-> {
             try {
-                double maxVolume = tester.determineFunctioning();
-                this.mivLevel.setProgress((-91-maxVolume)/-91);
-            }catch(IOException | InterruptedException e){
-                Platform.runLater(()-> {
-                    this.functioning = false;
-                    this.alert.unknownError();
-                });
+                MicrophoneTester tester = new MicrophoneTester();
+                this.functioning = true;
+                while(this.functioning) {
+                    try {
+                        double maxVolume = tester.determineFunctioning();
+                        this.mivLevel.setProgress((-91-maxVolume)/-91);
+                    }catch(IOException | InterruptedException e){
+                        Platform.runLater(()-> {
+                            this.functioning = false;
+                            this.alert.unknownError();
+                        });
+                    }
+                }
+            } catch(Exception e){
             }
-        }
+        });
+        new Thread((task)).start();
     }
 
     /**
@@ -115,37 +116,50 @@ public class PracticeNameController implements Initializable {
      * One record button pressed, will disable the gui and record the user recording
      */
     public void recordUserButtonPressed() {
-        //Upadates score to reflect new recording made
-        this.scoreLabel.setText("Current Score: " + score.nameRecorded());
+        if(this.recordButton.getText().equals("Record")) {
+            //Upadates score to reflect new recording made
+            this.scoreLabel.setText("Current Score: " + score.nameRecorded());
 
-        //Changes color of miclevel to show recording in progress
-        this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
+            //Changes color of miclevel to show recording in progress
+            this.mivLevel.setStyle("-fx-accent: rgba(255,113,133,0.92)");
 
-        //Puts gui in recoridng state
-        this.player.stopAudioPlayback();
-        this.recordButton.setText("Recording...");
-        configureRecordingState(true);
+            //Puts gui in recoridng state
+            this.player.stopAudioPlayback();
+            this.recordButton.setText("Stop");
+            configureRecordingState(true);
 
-        //Records the user
-        String latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getFileNamePart(this.player.getCurrentPlaylistName());
-        Runnable task = new Thread( ()-> {
-            try {
-                this.player.recordAttempt(latestRecordedName);
-                Platform.runLater( ()-> {
-                	// Enables gui on recording complete
-                    configureRecordingState(false);
-                    this.playUserButton.setDisable(false);
-                    this.saveUserButton.setDisable(false);
-                    this.compareButton.setDisable(false);
-                    this.recordButton.setText("Record");
-                    this.mivLevel.setStyle("-fx-accent: #b7deff");
-
-                });
-            } catch (InterruptedException | IOException e) {
-                alert.unknownError();
-            }
-        });
-        new Thread(task).start();
+            //Records the user
+            String latestRecordedName = "se206_" + formatter.format(new Date()) + "_" + this.player.getFileNamePart(this.player.getCurrentPlaylistName());
+            Runnable task = new Thread(() -> {
+                try {
+                    this.player.recordAttempt(latestRecordedName);
+                    Platform.runLater(() -> {
+                        // Enables gui on recording complete
+                        configureRecordingState(false);
+                        this.playUserButton.setDisable(false);
+                        this.saveUserButton.setDisable(false);
+                        this.compareButton.setDisable(false);
+                        this.recordButton.setText("Record");
+                        this.functioning=false;
+                        testMicrophoneWorking();
+                        this.mivLevel.setStyle("-fx-accent: #b7deff");
+                    });
+                } catch (IOException | InterruptedException e) {
+                    alert.unknownError();
+                }
+            });
+            new Thread(task).start();
+        }else {
+            this.recordButton.setText("Record");
+            Runnable task = new Thread(() -> {
+                try {
+                    this.player.stopRecordAttempt();
+                } catch (InterruptedException | IOException e) {
+                    alert.unknownError();
+                }
+            });
+            new Thread(task).start();
+        }
     }
 
 
@@ -182,6 +196,11 @@ public class PracticeNameController implements Initializable {
     public void doneButtonPressed() {
         this.player.stopAudioPlayback();
         this.functioning = false;
+        if(this.recordButton.getText().equals("Stop")){
+            try {
+                this.player.stopRecordAttempt();
+            } catch (InterruptedException | IOException e) { }
+        }
         ((Stage) titleLabel.getScene().getWindow()).close();
     }
 
@@ -214,6 +233,6 @@ public class PracticeNameController implements Initializable {
     public void configureRecordingState(boolean state) {
         this.databaseSquare.setDisable(state);
         this.compareSquare.setDisable(state);
-        this.yourSquare.setDisable(state);
+        //this.yourSquare.setDisable(state);
     }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -294,14 +295,23 @@ public class Player {
 		this.mediaPlayer.play();
 	}
 
-	public void recordAttempt(String latestRecordedName) throws InterruptedException, IOException {
+	public void recordAttempt(String latestRecordedName) throws IOException, InterruptedException {
 		this.latestRecordedName = latestRecordedName;
 		String RECORD_NAME_ATTEMPT_COMMAND = "rm names/temp/temp.wav;"
-				+ " ffmpeg -f alsa -i default -t 5 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav 2> /dev/null; " +
-				"ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
+				+ " ffmpeg -f alsa -i default -t 100 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav &>/dev/null";
 		Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
 		process.waitFor();
+		RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
+		process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+		process.waitFor();
 	}
+
+	public void stopRecordAttempt() throws InterruptedException, IOException {
+		String STOP_RECORDING = "killall -s SIGINT ffmpeg";
+		Process process = new ProcessBuilder("/bin/bash", "-c", STOP_RECORDING).start();
+		process.waitFor();
+	}
+
 
 	public void saveAttempt() throws IOException {
 		String searchUser = "ls names/user | grep -i [[:digit:]]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";

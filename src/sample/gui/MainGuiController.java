@@ -262,6 +262,7 @@ public class MainGuiController implements Initializable {
             stage.setTitle("Mark Bad Quality");
             stage.setResizable(false);
             stage.showAndWait();
+            ((Stage) rootPane.getScene().getWindow()).setResizable(true);
         }catch(IOException e){
             this.alert.unknownError();
         }
@@ -351,6 +352,7 @@ public class MainGuiController implements Initializable {
             //On close of practice module, checks if new skin color has been unlocked
             this.topPane.setStyle("-fx-background-color: " + this.score.getColor());
             this.sessionPlaybackControl.setStyle("-fx-background-color: " + this.score.getColor());
+            ((Stage) rootPane.getScene().getWindow()).setResizable(true);
         }catch(IOException e){
             this.alert.unknownError();
         }
