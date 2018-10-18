@@ -14,16 +14,14 @@ import sample.gui.PopupAlert;
 public class Player {
 
 	private String text;
-	private List<String> playlistNames = new ArrayList<String>();
+	private List<String> playlistNames = new ArrayList<>();
 	private PopupAlert alert = new PopupAlert();
 	private int currentNameIndex;
-	private List<File> wavFilesPlaylist = new ArrayList<File>();
-	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
-	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
-	private String workingName;
+	private List<File> wavFilesPlaylist = new ArrayList<>();
+	private List<PlayListItem> playList = new ArrayList<>();
+	private List<PlayListItem> playListOriginal = new ArrayList<>();
 	private String latestRecordedName;
-	private String pastRecordingOfCurrentName;
-	
+
 	private MediaPlayer mediaPlayer;
 	
 	public Player() {}
@@ -32,7 +30,7 @@ public class Player {
 		this.text = text;
 	}
 	
-	public File getCurrentWav() {
+	private File getCurrentWav() {
 		return playList.get(currentNameIndex).getWav();
 	}
 	
@@ -60,7 +58,7 @@ public class Player {
                         }
 
                 });
-            } catch (Exception e) {}
+            	} catch (Exception e) {}
             });
             new Thread(task).start();
 	}
@@ -99,9 +97,7 @@ public class Player {
 	
 	public void orderPlayList() {
 		playList.clear();
-		for (PlayListItem item : playListOriginal) {
-			playList.add(item);
-		}
+		playList.addAll(playListOriginal);
 	}
 	
 	public void nextName() {
@@ -133,7 +129,7 @@ public class Player {
 		return playList.get(currentNameIndex);
 	}
 	
-	public void createWavFiles() throws IOException {
+	private void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			// Name needs concatenation
 			createSingleWavFile(name);
@@ -141,11 +137,10 @@ public class Player {
 	}
 
 	public String[] getSegmentedNames(String name) {
-		return name.split(" |-|_");
+		return name.split("[ \\-_]");
 	}
 
 	public String getFileNamePart(String name) {
-		String[] names = name.split(" |-|_");
 		name = name.replace(" ", "_");
 		name = name.replace("-", "_");
 		return name;
@@ -155,31 +150,26 @@ public class Player {
 		PlayListItem item = new PlayListItem(name);
 
 		if (name.contains(" ") || name.contains("-") || name.contains("_")) {
-			String[] names = name.split(" |-|_");
+			String[] names = name.split("[ \\-_]");
 			item.setNamesAmount(names.length);
 			name = name.replace(" ", "_");
 			name = name.replace("-", "_");
-			workingName = name;
+			String workingName = name;
 			removeConcatFile(workingName);
 			for (String singleName : names) {
 				String path = createFilePath(singleName);
 				if (!path.equals("")) {
 					addToConcatFile(path, workingName);
-				}
-				else {
+				} else {
 					item.addWarning(singleName);
 				}
 			}
-//			Runnable task = new Thread( ()-> {
-				createConcatFile(workingName);
-//			});
-//			new Thread(task).start();
+			createConcatFile(workingName);
 			String path = System.getProperty("user.dir") + "/names/temp/" + workingName + ".wav";
 			File file = new File(path);
 			wavFilesPlaylist.add(file);
 			item.setWav(file);
-		}
-		else {
+		} else {
 			// add singular wav file to the files playlist
 			// if no such name exists, file is not added
 			String path = createFilePath(name);
@@ -188,27 +178,25 @@ public class Player {
 				File file = new File(path);
 				wavFilesPlaylist.add(file);
 				item.setWav(file);
-			}
-			else {
+			} else {
 				item.addWarning(name);
 			}
 		}
 		playList.add(item);
 	}
 	
-	public void createConcatFile(String name) {
+	private void createConcatFile(String name) {
 		String command = "ffmpeg -f concat -safe 0 -i names/temp/" + name + ".txt -c copy names/temp/" + name + ".wav; "
 				+ "ffmpeg -i names/temp/" + name + ".wav -filter:a loudnorm names/temp/" + name + ".wav; "
 						+ "ffmpeg -hide_banner -i names/temp/" + name + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + name + ".wav 2> /dev/null";
 		try {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
-//			process.waitFor();
 		} catch (IOException e) {
 			alert.unknownError();
 		}
 	}
 	
-	public void addToConcatFile(String path, String name) {
+	private void addToConcatFile(String path, String name) {
 		String concatPath = "\'" + System.getProperty("user.dir") + "/names/temp/" + name + ".txt" + "\'";
 		String command = "echo file " + path + " >> " + concatPath;
 		try {
@@ -219,7 +207,7 @@ public class Player {
 		}
 	}
 	
-	public void removeConcatFile(String name) {
+	private void removeConcatFile(String name) {
 		String path = System.getProperty("user.dir") + "/names/temp/" + name + ".txt";
 		File concat = new File(path);
 		if (concat.exists()) {
@@ -236,7 +224,7 @@ public class Player {
 	public String createFilePath(String name) throws IOException {
 
 		// Find badly rated names
-		List<String> badCreations = new ArrayList<String>();
+		List<String> badCreations = new ArrayList<>();
 		File badRated = new File(System.getProperty("user.dir") + "/names/badQualityRecordings.txt");
 		BufferedReader br = new BufferedReader(new FileReader(badRated));
 		String str;
@@ -276,8 +264,7 @@ public class Player {
 			BufferedReader stdoutBufferedUser = new BufferedReader(new InputStreamReader(stdoutUser));
 			String creationUser;
 			if ((creationUser = stdoutBufferedUser.readLine()) != null) {
-				String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
-				return path;
+				return System.getProperty("user.dir") + "/names/user/" + creationUser;
 			}
 			else {
 				// no such recording
