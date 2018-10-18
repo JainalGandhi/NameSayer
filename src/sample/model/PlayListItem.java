@@ -8,7 +8,7 @@ public class PlayListItem {
 	
 	private String name;
 	private File wav;
-	private List<String> warnings = new ArrayList<String>();
+	private List<String> warnings = new ArrayList<>();
 	private int names;
 	public Boolean disablePractice = false;
 	
@@ -53,19 +53,19 @@ public class PlayListItem {
 		return text;
 	}
 	
-	public String getWarnings() {
-		String warning = "     Warning: Could not find ";
+	private String getWarnings() {
+		StringBuilder warning = new StringBuilder("     Warning: Could not find ");
 		int iterator = 0;
 		for (String str: warnings) {
 			iterator++;
 			if (iterator == 1) {
-				warning = warning + str;
+				warning.append(str);
 			}
 			else {
-				warning = warning + ", " + str;
+				warning.append(", ").append(str);
 			}
 		}
-		return warning;
+		return warning.toString();
 	}
 
 }
