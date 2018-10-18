@@ -44,9 +44,6 @@ public class MainGuiController implements Initializable {
     @FXML private Slider volumeSlider;
     @FXML private ToggleButton shuffleToggle;
     @FXML private Button clearPlaylistButton;
-    @FXML private Button previousButton;
-    @FXML private Button playButton;
-    @FXML private Button nextButton;
     @FXML private Button practiceButton;
 
 
@@ -216,10 +213,9 @@ public class MainGuiController implements Initializable {
      * If the text area is empty and files are inputted, prepares and constructs playlist and associated fields
      */
     private void startSession() {
-        player.setText(mainTextArea.getText());
         try {
             //Creates playlist
-            player.formPlaylist();
+            player.formPlaylist(this.mainTextArea.getText());
         } catch (IOException e) {
             alert.unknownError();
         }
@@ -232,7 +228,7 @@ public class MainGuiController implements Initializable {
      */
     private void setNowPlaying() {
         nowPlayingText.setText(player.getNowPlaying());
-        changePracticeButton(player.getCurrentItem().disablePractice);
+        changePracticeButton(player.currentNameNotValid());
     }
 
     /**
@@ -276,13 +272,13 @@ public class MainGuiController implements Initializable {
             //Shuffle the order of the playlist
             player.shufflePlayList();
             nowPlayingText.setText(player.getNowPlaying());
-            changePracticeButton(player.getCurrentItem().disablePractice);
+            changePracticeButton(player.currentNameNotValid());
         }
         else {
             //Goes back to original oder of playlist
             player.orderPlayList();
             nowPlayingText.setText(player.getNowPlaying());
-            changePracticeButton(player.getCurrentItem().disablePractice);
+            changePracticeButton(player.currentNameNotValid());
         }
     }
 
@@ -294,7 +290,7 @@ public class MainGuiController implements Initializable {
         this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.prevName();
         nowPlayingText.setText(player.getNowPlaying());
-        changePracticeButton(player.getCurrentItem().disablePractice);
+        changePracticeButton(player.currentNameNotValid());
     }
 
     /**
@@ -325,7 +321,7 @@ public class MainGuiController implements Initializable {
         this.currentScore.setText("Current Score: " + score.differentNameRequested());
         player.nextName();
         nowPlayingText.setText(player.getNowPlaying());
-        changePracticeButton(player.getCurrentItem().disablePractice);
+        changePracticeButton(player.currentNameNotValid());
     }
 
     /**
