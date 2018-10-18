@@ -34,7 +34,7 @@ public class Player {
 	/**
 	 * Forms the initial playlist from the inputted text
 	 * @param text
-	 * @throws IOException
+	 * @throws IOException IOException if error occurs
 	 */
 	public void formPlaylist(String text) throws IOException {
 		playList.clear();
@@ -57,7 +57,7 @@ public class Player {
 	/**
 	 * Adds a single name to the currently created playlist
 	 * @param name name to add to playlist
-	 * @throws IOException
+	 * @throws IOException IOException if error occurs
 	 */
 	public void addToPlaylist(String name) throws IOException {
 		playlistNames.add(name);
@@ -157,7 +157,7 @@ public class Player {
 	/**
 	 * Creates the wa file associated with the inputted name. Concatenates individual names if required into single file
 	 * @param name the name to create wav file of
-	 * @throws IOException
+	 * @throws IOException IOException if error occurs
 	 */
 	private void createSingleWavFile(String name) throws IOException {
 		PlayListItem item = new PlayListItem(name);
@@ -251,7 +251,7 @@ public class Player {
 	 * from being added to the concatenation.
 	 * @param name the name to create the file path of
 	 * @return the path of the name
-	 * @throws IOException
+	 * @throws IOException IOException if error occurs
 	 */
 	public String createFilePath(String name) throws IOException {
 		// Find badly rated names
@@ -343,17 +343,35 @@ public class Player {
         new Thread(task).start();
     }
 
-    /**
-     * Finds the latest user wav recorded file of the current name and plays it to the user
-     * @param volume the volume to set the mediaPlayer to and play the audio file with
-     * @throws IOException
-     */
-	public void playPastRecording(double volume) throws IOException {
+	/**
+	 * Gets any existing past recordings of the current name in the /names/user directory through bash command
+	 * @return string representation of bash command return
+	 * @throws IOException IOException if error occurs
+	 */
+	private String getPastRecording() throws IOException {
 		String searchUser = "ls names/user/*[0-9]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
 		InputStream stdout = process.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
-		String line = stdoutBuffered.readLine();
+		return stdoutBuffered.readLine();
+	}
+
+	/**
+	 * Checks if a past recording exists in the /names/user directory for the current name
+	 * @return boolean representing if recording exists (true means past recording exists)
+	 * @throws IOException IOException if error occurs
+	 */
+	public boolean pastRecordingDoesNotExist() throws IOException {
+    	return getPastRecording()==null;
+	}
+
+    /**
+     * Finds the latest user wav recorded file of the current name and plays it to the user
+     * @param volume the volume to set the mediaPlayer to and play the audio file with
+     * @throws IOException IOException if error occurs
+     */
+	public void playPastRecording(double volume) throws IOException {
+		String line = getPastRecording();
 		if(line == null){
 		    //Alerts user that no past recording exists
 			this.alert.noPastRecording();
@@ -369,8 +387,8 @@ public class Player {
      * Records the users attempt at saying the current name. Records a 5 second audio clip and removes any silence from it.
      * Clip saved in /names/temp as a file named after the inputted String.
      * @param latestRecordedName the file name (incl formatted date) for how to call the file
-     * @throws InterruptedException
-     * @throws IOException
+     * @throws InterruptedException InterruptedException if error occurs
+     * @throws IOException IOException if error occurs
      */
     public void recordAttempt(String latestRecordedName) throws IOException, InterruptedException {
         this.latestRecordedName = latestRecordedName;
@@ -402,7 +420,7 @@ public class Player {
      * Saves the latest recorded name to a local directory to allow relisten upon user request. This directory is
      * permanently saved so name can be relistened to after program exit.
      * Will delete any other saved attempt of the name as only one version ever needed for playback as per requirements
-     * @throws IOException
+     * @throws IOException IOException if error occurs
      */
     public void saveAttempt() throws IOException {
         //Deletes any current saved attempts for that name

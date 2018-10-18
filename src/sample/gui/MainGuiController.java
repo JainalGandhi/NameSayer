@@ -90,11 +90,19 @@ public class MainGuiController implements Initializable {
         this.volumeSlider.setValue(80);
 
     }
-    
+
+    /**
+     * Disables the practice, play and past recording buttons if name is invalid or past recording does not exist
+     * @param change boolean for if to disable components
+     */
     public void changePracticeButton(Boolean change) {
-    	this.practiceButton.setDisable(change);
+        this.practiceButton.setDisable(change);
     	this.playButton.setDisable(change);
-        this.playUserRecording.setDisable(change);
+    	try {
+            this.playUserRecording.setDisable(change || this.player.pastRecordingDoesNotExist());
+        } catch(IOException e) {
+    	    this.playUserRecording.setDisable(true);
+        }
     }
 
     /**
@@ -353,6 +361,7 @@ public class MainGuiController implements Initializable {
             this.topPane.setStyle("-fx-background-color: " + this.score.getColor());
             this.sessionPlaybackControl.setStyle("-fx-background-color: " + this.score.getColor());
             ((Stage) rootPane.getScene().getWindow()).setResizable(true);
+            changePracticeButton(player.currentNameNotValid());
         }catch(IOException e){
             this.alert.unknownError();
         }
