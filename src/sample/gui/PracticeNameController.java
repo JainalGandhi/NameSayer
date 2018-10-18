@@ -136,9 +136,6 @@ public class PracticeNameController implements Initializable {
                     Platform.runLater(() -> {
                         // Enables gui on recording complete
                         configureRecordingState(false);
-                        this.playUserButton.setDisable(false);
-                        this.saveUserButton.setDisable(false);
-                        this.compareButton.setDisable(false);
                         this.recordButton.setText("Record");
                         this.functioning=false;
                         testMicrophoneWorking();
@@ -233,6 +230,8 @@ public class PracticeNameController implements Initializable {
     public void configureRecordingState(boolean state) {
         this.databaseSquare.setDisable(state);
         this.compareSquare.setDisable(state);
-        //this.yourSquare.setDisable(state);
+        this.playUserButton.setDisable(state);
+        this.saveUserButton.setDisable(state);
+        this.compareButton.setDisable(state);
     }
 }
