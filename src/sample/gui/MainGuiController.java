@@ -45,6 +45,8 @@ public class MainGuiController implements Initializable {
     @FXML private ToggleButton shuffleToggle;
     @FXML private Button clearPlaylistButton;
     @FXML private Button practiceButton;
+    @FXML private Button playButton;
+    @FXML private Button playUserRecording;
 
 
     /**
@@ -91,6 +93,8 @@ public class MainGuiController implements Initializable {
     
     public void changePracticeButton(Boolean change) {
     	this.practiceButton.setDisable(change);
+    	this.playButton.setDisable(change);
+        this.playUserRecording.setDisable(change);
     }
 
     /**
