@@ -36,7 +36,7 @@ each name. If the record button is not pressed, and you change to a different na
 your score/streak goes back to 0. As your score increases, you may receive new skins, which
 act as rewards.
 
-Target Audience:
+===== Target Audience =====
 The target audience for this application is a universtiy lecturer. To satisfy this, we
 went for a minimal theme. A lecturer does not want anything too animated or fancy.
 We also had a bonus feature of allowing the user to import multiple text files (perhaps

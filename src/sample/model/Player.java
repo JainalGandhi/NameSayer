@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -14,73 +13,40 @@ import sample.gui.PopupAlert;
 
 public class Player {
 
-	private String text;
-	private List<String> playlistNames = new ArrayList<String>();
+	private List<String> playlistNames = new ArrayList<>();
 	private PopupAlert alert = new PopupAlert();
 	private int currentNameIndex;
-	private List<File> wavFilesPlaylist = new ArrayList<File>();
-	private List<PlayListItem> playList = new ArrayList<PlayListItem>();
-	private List<PlayListItem> playListOriginal = new ArrayList<PlayListItem>();
-	private String workingName;
+	private List<File> wavFilesPlaylist = new ArrayList<>();
+	private List<PlayListItem> playList = new ArrayList<>();
+	private List<PlayListItem> playListOriginal = new ArrayList<>();
 	private String latestRecordedName;
-	private String pastRecordingOfCurrentName;
-
 	private MediaPlayer mediaPlayer;
-	
+
+    /**
+     * Empty constructor for the Player class
+     */
 	public Player() {}
 	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public File getCurrentWav() {
+	private File getCurrentWav() {
 		return playList.get(currentNameIndex).getWav();
 	}
-	
-	public void playCurrentName(double volume) {
-		stopAudioPlayback();
-		File file = playList.get(currentNameIndex).getWav();
-            Runnable task = new Thread( ()-> {
-                try {
-                mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
-                mediaPlayer.setVolume(volume);
-                mediaPlayer.play();
-                mediaPlayer.setOnError( ()-> {
 
-                        try {
-                            String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -y -i " + file.toString() + " " + file.toString();
-                            Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
-                            process.waitFor();
-
-                            Platform.runLater(() -> {
-                                mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
-                                mediaPlayer.play();
-                            });
-                        }catch(IOException | InterruptedException e) {
-                            alert.unknownError();
-                        }
-
-                });
-            } catch (Exception e) {}
-            });
-            new Thread(task).start();
-	}
-	
-	public void stopAudioPlayback() {
-		if (mediaPlayer != null) {
-			mediaPlayer.stop();
-		}
-	}
-	
-	public void formPlaylist() throws IOException {
+	/**
+	 * Forms the initial playlist from the inputted text
+	 * @param text
+	 * @throws IOException
+	 */
+	public void formPlaylist(String text) throws IOException {
 		playList.clear();
 		playlistNames.clear();
 		playListOriginal.clear();
+		//Splits text by newline characters
 		String[] splitText = text.split("\n");
 		if (splitText.length == 0) {
+			//No name was inputted
 			alert.noNameSelected();
-		}
-		else {
+		} else {
+			//Adding all items to the playlist and forming audio files
 			playlistNames.addAll(Arrays.asList(splitText));
 			currentNameIndex = 0;
 			createWavFiles();
@@ -88,23 +54,35 @@ public class Player {
 		}
 	}
 
-	public void addToPlaylist(String text) throws IOException {
-		playlistNames.add(text);
-		createSingleWavFile(text);
+	/**
+	 * Adds a single name to the currently created playlist
+	 * @param name name to add to playlist
+	 * @throws IOException
+	 */
+	public void addToPlaylist(String name) throws IOException {
+		playlistNames.add(name);
+		createSingleWavFile(name);
 		playListOriginal.add(playList.get(playList.size()-1));
 	}
-	
+
+	/**
+	 * Randomises the order of the items in the playlist
+	 */
 	public void shufflePlayList() {
 		Collections.shuffle(playList);
 	}
-	
+
+	/**
+	 * Re-orders playlist into original order to unshuffle
+	 */
 	public void orderPlayList() {
 		playList.clear();
-		for (PlayListItem item : playListOriginal) {
-			playList.add(item);
-		}
+		playList.addAll(playListOriginal);
 	}
-	
+
+	/**
+	 * Increases currentNameIndex by 1 to emulate going to next name in playlist
+	 */
 	public void nextName() {
 		int size = playList.size();
 		if (currentNameIndex == size - 1) {
@@ -114,7 +92,10 @@ public class Player {
 			currentNameIndex++;
 		}
 	}
-	
+
+	/**
+	 * Reduces currentNameIndex by 1 to emulate going to previous name in playlist
+	 */
 	public void prevName() {
 		int size = playList.size();
 		if (currentNameIndex == 0) {
@@ -123,64 +104,84 @@ public class Player {
 		else {
 			currentNameIndex--;
 		}
-
 	}
-	
+
+	/**
+	 * Returns now playing text to be displayed to the user to represent the current name in the playlist.
+	 * This includes warnings of missing or invalid names.
+	 * @return string for now playing label
+	 */
 	public String getNowPlaying() {
 		return playList.get(currentNameIndex).getNowPlayingText();
 	}
-	
-	public PlayListItem getCurrentItem() {
-		return playList.get(currentNameIndex);
+
+	/**
+	 * Returns whether or not the current name is valid (true if invalid, false if valid)
+	 * @return boolean value associated with the current name being invalid
+	 */
+	public boolean currentNameNotValid() {
+		return playList.get(currentNameIndex).disablePractice;
 	}
-	
-	public void createWavFiles() throws IOException {
+
+	/**
+	 * Creates all the wav files for the playlist
+	 * @throws IOException
+	 */
+	private void createWavFiles() throws IOException {
 		for (String name : playlistNames) {
 			// Name needs concatenation
 			createSingleWavFile(name);
 		}
 	}
 
+	/**
+	 * Segments/splits the name into array of type string. Split on occurances of -,_ or space
+	 * @param name the name to split
+	 * @return the substrings in an array - each element is a split
+	 */
 	public String[] getSegmentedNames(String name) {
-		return name.split(" |-|_");
+		return name.split("[ \\-_]");
 	}
 
+	/**
+	 * Returns string in file format. Replaces all occurances of spaces and hyhens with underscore
+	 * @param name the name to convert string
+	 * @return the file format string name
+	 */
 	public String getFileNamePart(String name) {
-		String[] names = name.split(" |-|_");
 		name = name.replace(" ", "_");
 		name = name.replace("-", "_");
 		return name;
 	}
 
+	/**
+	 * Creates the wa file associated with the inputted name. Concatenates individual names if required into single file
+	 * @param name the name to create wav file of
+	 * @throws IOException
+	 */
 	private void createSingleWavFile(String name) throws IOException {
 		PlayListItem item = new PlayListItem(name);
-
 		if (name.contains(" ") || name.contains("-") || name.contains("_")) {
-			String[] names = name.split(" |-|_");
+			String[] names = getSegmentedNames(name);
 			item.setNamesAmount(names.length);
 			name = name.replace(" ", "_");
 			name = name.replace("-", "_");
-			workingName = name;
+			String workingName = name;
 			removeConcatFile(workingName);
 			for (String singleName : names) {
 				String path = createFilePath(singleName);
 				if (!path.equals("")) {
 					addToConcatFile(path, workingName);
-				}
-				else {
+				} else {
 					item.addWarning(singleName);
 				}
 			}
-//			Runnable task = new Thread( ()-> {
-				createConcatFile(workingName);
-//			});
-//			new Thread(task).start();
+			createConcatFile(workingName);
 			String path = System.getProperty("user.dir") + "/names/temp/" + workingName + ".wav";
 			File file = new File(path);
 			wavFilesPlaylist.add(file);
 			item.setWav(file);
-		}
-		else {
+		} else {
 			// add singular wav file to the files playlist
 			// if no such name exists, file is not added
 			String path = createFilePath(name);
@@ -189,27 +190,34 @@ public class Player {
 				File file = new File(path);
 				wavFilesPlaylist.add(file);
 				item.setWav(file);
-			}
-			else {
+			} else {
 				item.addWarning(name);
 			}
 		}
 		playList.add(item);
 	}
-	
-	public void createConcatFile(String name) {
+
+	/**
+	 * Creates the required file for a name that requires concatenation
+	 * @param name the name of the resulting file
+	 */
+	private void createConcatFile(String name) {
 		String command = "ffmpeg -f concat -safe 0 -i names/temp/" + name + ".txt -c copy names/temp/" + name + ".wav; "
 				+ "ffmpeg -i names/temp/" + name + ".wav -filter:a loudnorm names/temp/" + name + ".wav; "
 						+ "ffmpeg -hide_banner -i names/temp/" + name + ".wav -af silenceremove=0:0:0:-1:2:-45dB names/temp/" + name + ".wav 2> /dev/null";
 		try {
 			Process process = new ProcessBuilder("/bin/bash", "-c", command).start();
-//			process.waitFor();
 		} catch (IOException e) {
 			alert.unknownError();
 		}
 	}
-	
-	public void addToConcatFile(String path, String name) {
+
+	/**
+	 * Creates the concatenation text file used in the ffmpeg command. Each line is a path of the concatenated file.
+	 * @param path the path to add to the text file
+	 * @param name the name to call the text file
+	 */
+	private void addToConcatFile(String path, String name) {
 		String concatPath = "\'" + System.getProperty("user.dir") + "/names/temp/" + name + ".txt" + "\'";
 		String command = "echo file " + path + " >> " + concatPath;
 		try {
@@ -219,8 +227,12 @@ public class Player {
 			alert.unknownError();
 		}
 	}
-	
-	public void removeConcatFile(String name) {
+
+	/**
+	 * Deletes the concat file from the temp directory
+	 * @param name path to concat file
+	 */
+	private void removeConcatFile(String name) {
 		String path = System.getProperty("user.dir") + "/names/temp/" + name + ".txt";
 		File concat = new File(path);
 		if (concat.exists()) {
@@ -233,11 +245,17 @@ public class Player {
 			}
 		}
 	}
-	
-	public String createFilePath(String name) throws IOException {
 
+	/**
+	 * Creates the file path of the inputted name. Takes into account the rating of the files to avoid badly rated names
+	 * from being added to the concatenation.
+	 * @param name the name to create the file path of
+	 * @return the path of the name
+	 * @throws IOException
+	 */
+	public String createFilePath(String name) throws IOException {
 		// Find badly rated names
-		List<String> badCreations = new ArrayList<String>();
+		List<String> badCreations = new ArrayList<>();
 		File badRated = new File(System.getProperty("user.dir") + "/names/badQualityRecordings.txt");
 		BufferedReader br = new BufferedReader(new FileReader(badRated));
 		String str;
@@ -268,92 +286,68 @@ public class Player {
 				}
 			}
 			return path;
-		}
-		// Because we don't make available to option for deletion, this else statement should never be reached
-		else {
+		} else {
+			// Because we don't make available to option for deletion, this else statement should never be reached
 			String commandUser = "ls names/user | grep -i _" + name;
 			Process processUser = new ProcessBuilder("/bin/bash", "-c", commandUser).start();
 			InputStream stdoutUser = processUser.getInputStream();
 			BufferedReader stdoutBufferedUser = new BufferedReader(new InputStreamReader(stdoutUser));
 			String creationUser;
 			if ((creationUser = stdoutBufferedUser.readLine()) != null) {
-				String path = System.getProperty("user.dir") + "/names/user/" + creationUser;
-				return path;
-			}
-			else {
+				return System.getProperty("user.dir") + "/names/user/" + creationUser;
+			} else {
 				// no such recording
 				return "";
 			}
 		}
 	}
 
-	public String getCurrentPlaylistName() { return this.playList.get(this.currentNameIndex).getName(); }
-
-	public void playLatestUserRecording() {
-		String path = System.getProperty("user.dir") + "/names/temp/" + getLatestRecordedName() + ".wav";
-		this.mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
-		this.mediaPlayer.play();
+    /**
+     * Gets the name from the current index in the playlist
+     * @return current name
+     */
+	public String getCurrentPlaylistName() {
+	    return this.playList.get(this.currentNameIndex).getName();
 	}
 
-	public void recordAttempt(String latestRecordedName) throws IOException, InterruptedException {
-		this.latestRecordedName = latestRecordedName;
-		String RECORD_NAME_ATTEMPT_COMMAND = "rm names/temp/temp.wav;"
-				+ " ffmpeg -f alsa -i default -t 15 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav &>/dev/null";
-		Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
-		process.waitFor();
-		RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
-		process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
-		process.waitFor();
-	}
+    /**
+     * Plays the concatenated audio file of the current name to the user
+     * @param volume the volume to set the mediaPlayer to and play the audio file with
+     */
+    public void playCurrentName(double volume) {
+        stopAudioPlayback();
+        File file = playList.get(currentNameIndex).getWav();
+        Runnable task = new Thread( ()-> {
+            try {
+                //Attempts to play the audio file
+                mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+                mediaPlayer.setVolume(volume);
+                mediaPlayer.play();
+                mediaPlayer.setOnError( ()-> {
+                    try {
+                        //If error occurs, tries to format the wav file to get into correct format for playing
+                        String RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -y -i " + file.toString() + " " + file.toString();
+                        Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+                        process.waitFor();
+                        Platform.runLater(() -> {
+                            //Reattempts playing the audio file
+                            mediaPlayer = new MediaPlayer(new Media(file.toURI().toString()));
+                            mediaPlayer.play();
+                        });
+                    }catch(IOException | InterruptedException e) {
+                        alert.unknownError();
+                    }
+                });
+            } catch (Exception e) {}
+        });
+        new Thread(task).start();
+    }
 
-	public void stopRecordAttempt() throws InterruptedException, IOException {
-		String STOP_RECORDING = "killall -s SIGINT ffmpeg";
-		Process process = new ProcessBuilder("/bin/bash", "-c", STOP_RECORDING).start();
-		process.waitFor();
-	}
-
-
-	public void saveAttempt() throws IOException {
-		String searchUser = "ls names/user | grep -i [[:digit:]]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
-		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
-		InputStream stdout = process.getInputStream();
-		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
-		String creation;
-		while ((creation = stdoutBuffered.readLine()) != null) {
-			String delete = "rm names/user/" + creation;
-			ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
-			process2.start();
-		}
-
-		// Save current recording in names/user
-		String saveCommand = "cp ./names/temp/" + this.latestRecordedName + ".wav ./names/user";
-		ProcessBuilder process3 = new ProcessBuilder("/bin/bash", "-c", saveCommand);
-		process3.start();
-	}
-
-	public String getLatestRecordedName() {
-		return this.latestRecordedName;
-	}
-
-	public void compareRecordings(int count) {
-		if (count == 0) {
-			return;
-		}
-
-		count--;
-		this.mediaPlayer = new MediaPlayer(new Media(getCurrentWav().toURI().toString()));
-		this.mediaPlayer.play();
-
-		int finalCount = count;
-		this.mediaPlayer.setOnEndOfMedia(() -> {
-			String path = System.getProperty("user.dir") + "/names/temp/" + this.latestRecordedName + ".wav";
-			mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
-			mediaPlayer.play();
-
-			mediaPlayer.setOnEndOfMedia(() -> compareRecordings(finalCount));
-		});
-	}
-
+    /**
+     * Finds the latest user wav recorded file of the current name and plays it to the user
+     * @param volume the volume to set the mediaPlayer to and play the audio file with
+     * @throws IOException
+     */
 	public void playPastRecording(double volume) throws IOException {
 		String searchUser = "ls names/user/*[0-9]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
 		Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
@@ -361,11 +355,107 @@ public class Player {
 		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String line = stdoutBuffered.readLine();
 		if(line == null){
+		    //Alerts user that no past recording exists
 			this.alert.noPastRecording();
 		}else {
+		    //Plays the file to the user
 			mediaPlayer = new MediaPlayer(new Media(new File(line).toURI().toString()));
 			mediaPlayer.setVolume(volume);
 			mediaPlayer.play();
+		}
+	}
+
+    /**
+     * Records the users attempt at saying the current name. Records a 5 second audio clip and removes any silence from it.
+     * Clip saved in /names/temp as a file named after the inputted String.
+     * @param latestRecordedName the file name (incl formatted date) for how to call the file
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void recordAttempt(String latestRecordedName) throws IOException, InterruptedException {
+        this.latestRecordedName = latestRecordedName;
+        String RECORD_NAME_ATTEMPT_COMMAND = "rm names/temp/temp.wav;"
+                + " ffmpeg -f alsa -i default -t 15 -acodec pcm_s16le -ar 22050 -ac 1 ./names/temp/temp.wav &>/dev/null";
+        Process process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+        process.waitFor();
+        RECORD_NAME_ATTEMPT_COMMAND = "ffmpeg -hide_banner -i ./names/temp/temp.wav -af silenceremove=0:0:0:-1:2:-45dB ./names/temp/" + this.latestRecordedName + ".wav 2> /dev/null";
+        process = new ProcessBuilder("/bin/bash", "-c", RECORD_NAME_ATTEMPT_COMMAND).start();
+        process.waitFor();
+    }
+
+    public void stopRecordAttempt() throws InterruptedException, IOException {
+        String STOP_RECORDING = "killall -s SIGINT ffmpeg";
+        Process process = new ProcessBuilder("/bin/bash", "-c", STOP_RECORDING).start();
+        process.waitFor();
+    }
+
+    /**
+     * Plays the latest user attempt at saying the name
+     */
+    public void playLatestUserRecording() {
+        String path = System.getProperty("user.dir") + "/names/temp/" + this.latestRecordedName + ".wav";
+        this.mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+        this.mediaPlayer.play();
+    }
+
+    /**
+     * Saves the latest recorded name to a local directory to allow relisten upon user request. This directory is
+     * permanently saved so name can be relistened to after program exit.
+     * Will delete any other saved attempt of the name as only one version ever needed for playback as per requirements
+     * @throws IOException
+     */
+    public void saveAttempt() throws IOException {
+        //Deletes any current saved attempts for that name
+        String searchUser = "ls names/user | grep -i [[:digit:]]_" + getFileNamePart(getCurrentPlaylistName()) + ".wav";
+        Process process = new ProcessBuilder("/bin/bash", "-c", searchUser).start();
+        InputStream stdout = process.getInputStream();
+        BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+        String creation;
+        while ((creation = stdoutBuffered.readLine()) != null) {
+            //Deletes each name
+            String delete = "rm names/user/" + creation;
+            ProcessBuilder process2 = new ProcessBuilder("/bin/bash", "-c", delete);
+            process2.start();
+        }
+
+        // Save current recording in names/user by copying recorded audio file from names/temp folder
+        String saveCommand = "cp ./names/temp/" + this.latestRecordedName + ".wav ./names/user";
+        ProcessBuilder process3 = new ProcessBuilder("/bin/bash", "-c", saveCommand);
+        process3.start();
+    }
+
+    /**
+     * Allows the user to compare the database version of the current name with their user recording a specified number
+     * of times. Plays the database version, followed by the user recording an inputted number of times.
+     * This is done recursively. On the completion of one audio file being complete, the next audio file is
+     * linked to play
+     * @param count the number of times to play the recording
+     */
+    public void compareRecordings(int count) {
+        //Recursive criteria to mark the end of comparing names
+        if (count == 0) {
+            return;
+        }
+
+        //Decrements count and then plays database version, followed user recording version. Then calls method again
+        count--;
+        this.mediaPlayer = new MediaPlayer(new Media(getCurrentWav().toURI().toString()));
+        this.mediaPlayer.play();
+        int finalCount = count;
+        this.mediaPlayer.setOnEndOfMedia(() -> {
+            String path = System.getProperty("user.dir") + "/names/temp/" + this.latestRecordedName + ".wav";
+            mediaPlayer = new MediaPlayer(new Media(new File(path).toURI().toString()));
+            mediaPlayer.play();
+            mediaPlayer.setOnEndOfMedia(() -> compareRecordings(finalCount));
+        });
+    }
+
+	/**
+	 * Stops any audio currently playing by the mediaplayer
+	 */
+	public void stopAudioPlayback() {
+		if (mediaPlayer != null) {
+			mediaPlayer.stop();
 		}
 	}
 }
