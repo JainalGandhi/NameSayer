@@ -169,7 +169,6 @@ public class MainGuiController implements Initializable {
      * to pick if they want to select only first name or full name to import, as not all users want to learn full name
      */
     public void importTextFileButtonPressed() {
-        clearPlaylistButtonPressed();
         //Opens file chooser to allow user to choose any valid text file(s)
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add names list text document");
@@ -179,6 +178,7 @@ public class MainGuiController implements Initializable {
         if(allFiles != null && textFilesNotEmpty(allFiles)) {
             //Asks user if they want to only input first name
             boolean importFirstName = this.alert.importFirstNameStyle();
+            clearPlaylistButtonPressed();
             Runnable task = new Thread(()-> {
                 //Loops through all selected files by the user
                 for (File file : allFiles) {
