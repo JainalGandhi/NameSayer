@@ -6,6 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+*Name Sayer, created by Jainal Gandhi (jgan963) and Hayden Simpson (hsim744)
+**/
+
 public class Main extends Application {
 
     private int STARTUP_GUI_HEIGHT = 700;

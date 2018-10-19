@@ -1,9 +1,12 @@
+Name Sayer README
+Written and created by Jainal Gandhi (jgan963) and Hayden Simpson (hsim744)
+
 ===== Installation =====
 Place the provided names database, the names folder, in the same directory as the 
 provided jar file, namesayer.jar. To run, either double click namesayer.jar or
  in the terminal run the command java -jar namesayer.jar
 
-===== User Manual =====
+===== Brief User Manual =====
 Starting:
 On startup additional wav files may be added to the database, so long as they follow
 the naming convention. Otherwise you can begin.
