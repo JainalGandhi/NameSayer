@@ -65,7 +65,7 @@ public class PopupAlert {
      */
     public boolean equipNewLevelRequest() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("You Have Unlocked a New Skin Color");
+        alert.setTitle("You have Unlocked a New Skin Color");
         alert.setHeaderText(null);
         alert.setContentText("Do you wish to equip your new skin color?");
 

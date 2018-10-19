@@ -147,9 +147,11 @@ public class MainGuiController implements Initializable {
         //Exports the main text area playlist to a text file for future user use
         Runnable task = new Thread(()->{
             try {
-                BufferedWriter bf = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/pastplaylists/" + new Date() +  ".txt"));
-                bf.write(str);
-                bf.close();
+                if(!str.isEmpty() && !str.equals("")) {
+                    BufferedWriter bf = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/pastplaylists/" + new Date() + ".txt"));
+                    bf.write(str);
+                    bf.close();
+                }
             } catch (IOException e) {
                 Platform.runLater(()->alert.unknownError());
             }
